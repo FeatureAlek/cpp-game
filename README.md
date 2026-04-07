@@ -2,8 +2,8 @@
 
 ## P0 – Team Formation (Week 8)
 
-- Team members: Faustas, Gustas
-- Team captain: Faustas
+- Team members: Faustas Alekna, Gustas Juškevičius
+- Team captain: Gustas Juškevičius
 - Project theme: 2D cooperative puzzle-platformer game
 - Scope: One level (for now)
 
