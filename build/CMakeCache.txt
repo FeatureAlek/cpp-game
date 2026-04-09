@@ -224,15 +224,6 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
-//Value Computed by CMake
-FireWaterGame_BINARY_DIR:STATIC=/home/faustas/Projects/c++/2Dgame/build
-
-//Value Computed by CMake
-FireWaterGame_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-FireWaterGame_SOURCE_DIR:STATIC=/home/faustas/Projects/c++/2Dgame
-
 //The directory containing a CMake configuration file for SFML.
 SFML_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/SFML
 

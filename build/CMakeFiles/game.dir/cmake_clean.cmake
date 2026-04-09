@@ -1,8 +1,10 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/game.dir/src/Block.cpp.o"
-  "CMakeFiles/game.dir/src/Block.cpp.o.d"
   "CMakeFiles/game.dir/src/Game.cpp.o"
   "CMakeFiles/game.dir/src/Game.cpp.o.d"
+  "CMakeFiles/game.dir/src/InputHandler.cpp.o"
+  "CMakeFiles/game.dir/src/InputHandler.cpp.o.d"
+  "CMakeFiles/game.dir/src/Player.cpp.o"
+  "CMakeFiles/game.dir/src/Player.cpp.o.d"
   "CMakeFiles/game.dir/src/main.cpp.o"
   "CMakeFiles/game.dir/src/main.cpp.o.d"
   "game"

@@ -236,4 +236,5 @@ CMakeFiles/game.dir/src/Game.cpp.o: \
  /usr/include/SFML/Graphics/Sprite.hpp \
  /usr/include/SFML/Graphics/Text.hpp \
  /usr/include/SFML/Graphics/VertexBuffer.hpp \
- /home/faustas/Projects/c++/2Dgame/include/Block.hpp
+ /home/faustas/Projects/c++/2Dgame/include/Player.hpp \
+ /home/faustas/Projects/c++/2Dgame/include/InputHandler.hpp

@@ -7,7 +7,7 @@ find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 include_directories(include)
 
 # directory - what files to compile; ./game to run it
-file(GLOB SRC_FILES src/*.cpp)
+file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp)
 add_executable(game ${SRC_FILES})
 
 target_link_libraries(game sfml-graphics sfml-window sfml-system)

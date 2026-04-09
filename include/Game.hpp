@@ -1,13 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Block.hpp"
+#include "Player.hpp"
+#include "InputHandler.hpp"
 
-class Game
+class Game 
 {
-private:
-    sf::RenderWindow window;
-    Block block;
-
 public:
     Game();
     void run();
@@ -16,4 +13,9 @@ private:
     void processEvents();
     void update();
     void render();
+
+    sf::Clock clock;
+    sf::RenderWindow window;
+    Player player;
+    InputHandler input;
 };

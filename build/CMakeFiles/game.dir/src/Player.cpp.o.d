@@ -1,7 +1,7 @@
-CMakeFiles/game.dir/src/Block.cpp.o: \
- /home/faustas/Projects/c++/2Dgame/src/Block.cpp \
+CMakeFiles/game.dir/src/Player.cpp.o: \
+ /home/faustas/Projects/c++/2Dgame/src/Player.cpp \
  /usr/include/stdc-predef.h \
- /home/faustas/Projects/c++/2Dgame/include/Block.hpp \
+ /home/faustas/Projects/c++/2Dgame/include/Player.hpp \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \

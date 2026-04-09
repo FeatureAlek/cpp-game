@@ -8,8 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/faustas/Projects/c++/2Dgame/src/Block.cpp" "CMakeFiles/game.dir/src/Block.cpp.o" "gcc" "CMakeFiles/game.dir/src/Block.cpp.o.d"
   "/home/faustas/Projects/c++/2Dgame/src/Game.cpp" "CMakeFiles/game.dir/src/Game.cpp.o" "gcc" "CMakeFiles/game.dir/src/Game.cpp.o.d"
+  "/home/faustas/Projects/c++/2Dgame/src/InputHandler.cpp" "CMakeFiles/game.dir/src/InputHandler.cpp.o" "gcc" "CMakeFiles/game.dir/src/InputHandler.cpp.o.d"
+  "/home/faustas/Projects/c++/2Dgame/src/Player.cpp" "CMakeFiles/game.dir/src/Player.cpp.o" "gcc" "CMakeFiles/game.dir/src/Player.cpp.o.d"
   "/home/faustas/Projects/c++/2Dgame/src/main.cpp" "CMakeFiles/game.dir/src/main.cpp.o" "gcc" "CMakeFiles/game.dir/src/main.cpp.o.d"
   )
 

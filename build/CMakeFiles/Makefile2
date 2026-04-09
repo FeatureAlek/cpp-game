@@ -82,12 +82,12 @@ clean: CMakeFiles/run.dir/clean
 CMakeFiles/game.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/game.dir/build.make CMakeFiles/game.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/game.dir/build.make CMakeFiles/game.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/faustas/Projects/c++/2Dgame/build/CMakeFiles --progress-num=1,2,3,4 "Built target game"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/faustas/Projects/c++/2Dgame/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target game"
 .PHONY : CMakeFiles/game.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/game.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/faustas/Projects/c++/2Dgame/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/faustas/Projects/c++/2Dgame/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/game.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/faustas/Projects/c++/2Dgame/build/CMakeFiles 0
 .PHONY : CMakeFiles/game.dir/rule
@@ -113,7 +113,7 @@ CMakeFiles/run.dir/all: CMakeFiles/game.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/run.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/faustas/Projects/c++/2Dgame/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/faustas/Projects/c++/2Dgame/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/run.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/faustas/Projects/c++/2Dgame/build/CMakeFiles 0
 .PHONY : CMakeFiles/run.dir/rule
@@ -134,6 +134,7 @@ CMakeFiles/run.dir/clean:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
+	$(CMAKE_COMMAND) -P /home/faustas/Projects/c++/2Dgame/build/CMakeFiles/VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

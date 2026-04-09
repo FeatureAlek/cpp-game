@@ -69,24 +69,10 @@ include CMakeFiles/game.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/game.dir/flags.make
 
-CMakeFiles/game.dir/src/Block.cpp.o: CMakeFiles/game.dir/flags.make
-CMakeFiles/game.dir/src/Block.cpp.o: /home/faustas/Projects/c++/2Dgame/src/Block.cpp
-CMakeFiles/game.dir/src/Block.cpp.o: CMakeFiles/game.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/faustas/Projects/c++/2Dgame/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/game.dir/src/Block.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/game.dir/src/Block.cpp.o -MF CMakeFiles/game.dir/src/Block.cpp.o.d -o CMakeFiles/game.dir/src/Block.cpp.o -c /home/faustas/Projects/c++/2Dgame/src/Block.cpp
-
-CMakeFiles/game.dir/src/Block.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/game.dir/src/Block.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/faustas/Projects/c++/2Dgame/src/Block.cpp > CMakeFiles/game.dir/src/Block.cpp.i
-
-CMakeFiles/game.dir/src/Block.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/game.dir/src/Block.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/faustas/Projects/c++/2Dgame/src/Block.cpp -o CMakeFiles/game.dir/src/Block.cpp.s
-
 CMakeFiles/game.dir/src/Game.cpp.o: CMakeFiles/game.dir/flags.make
 CMakeFiles/game.dir/src/Game.cpp.o: /home/faustas/Projects/c++/2Dgame/src/Game.cpp
 CMakeFiles/game.dir/src/Game.cpp.o: CMakeFiles/game.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/faustas/Projects/c++/2Dgame/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/game.dir/src/Game.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/faustas/Projects/c++/2Dgame/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/game.dir/src/Game.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/game.dir/src/Game.cpp.o -MF CMakeFiles/game.dir/src/Game.cpp.o.d -o CMakeFiles/game.dir/src/Game.cpp.o -c /home/faustas/Projects/c++/2Dgame/src/Game.cpp
 
 CMakeFiles/game.dir/src/Game.cpp.i: cmake_force
@@ -97,10 +83,38 @@ CMakeFiles/game.dir/src/Game.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/game.dir/src/Game.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/faustas/Projects/c++/2Dgame/src/Game.cpp -o CMakeFiles/game.dir/src/Game.cpp.s
 
+CMakeFiles/game.dir/src/InputHandler.cpp.o: CMakeFiles/game.dir/flags.make
+CMakeFiles/game.dir/src/InputHandler.cpp.o: /home/faustas/Projects/c++/2Dgame/src/InputHandler.cpp
+CMakeFiles/game.dir/src/InputHandler.cpp.o: CMakeFiles/game.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/faustas/Projects/c++/2Dgame/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/game.dir/src/InputHandler.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/game.dir/src/InputHandler.cpp.o -MF CMakeFiles/game.dir/src/InputHandler.cpp.o.d -o CMakeFiles/game.dir/src/InputHandler.cpp.o -c /home/faustas/Projects/c++/2Dgame/src/InputHandler.cpp
+
+CMakeFiles/game.dir/src/InputHandler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/game.dir/src/InputHandler.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/faustas/Projects/c++/2Dgame/src/InputHandler.cpp > CMakeFiles/game.dir/src/InputHandler.cpp.i
+
+CMakeFiles/game.dir/src/InputHandler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/game.dir/src/InputHandler.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/faustas/Projects/c++/2Dgame/src/InputHandler.cpp -o CMakeFiles/game.dir/src/InputHandler.cpp.s
+
+CMakeFiles/game.dir/src/Player.cpp.o: CMakeFiles/game.dir/flags.make
+CMakeFiles/game.dir/src/Player.cpp.o: /home/faustas/Projects/c++/2Dgame/src/Player.cpp
+CMakeFiles/game.dir/src/Player.cpp.o: CMakeFiles/game.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/faustas/Projects/c++/2Dgame/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/game.dir/src/Player.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/game.dir/src/Player.cpp.o -MF CMakeFiles/game.dir/src/Player.cpp.o.d -o CMakeFiles/game.dir/src/Player.cpp.o -c /home/faustas/Projects/c++/2Dgame/src/Player.cpp
+
+CMakeFiles/game.dir/src/Player.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/game.dir/src/Player.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/faustas/Projects/c++/2Dgame/src/Player.cpp > CMakeFiles/game.dir/src/Player.cpp.i
+
+CMakeFiles/game.dir/src/Player.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/game.dir/src/Player.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/faustas/Projects/c++/2Dgame/src/Player.cpp -o CMakeFiles/game.dir/src/Player.cpp.s
+
 CMakeFiles/game.dir/src/main.cpp.o: CMakeFiles/game.dir/flags.make
 CMakeFiles/game.dir/src/main.cpp.o: /home/faustas/Projects/c++/2Dgame/src/main.cpp
 CMakeFiles/game.dir/src/main.cpp.o: CMakeFiles/game.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/faustas/Projects/c++/2Dgame/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/game.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/faustas/Projects/c++/2Dgame/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/game.dir/src/main.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/game.dir/src/main.cpp.o -MF CMakeFiles/game.dir/src/main.cpp.o.d -o CMakeFiles/game.dir/src/main.cpp.o -c /home/faustas/Projects/c++/2Dgame/src/main.cpp
 
 CMakeFiles/game.dir/src/main.cpp.i: cmake_force
@@ -113,22 +127,24 @@ CMakeFiles/game.dir/src/main.cpp.s: cmake_force
 
 # Object files for target game
 game_OBJECTS = \
-"CMakeFiles/game.dir/src/Block.cpp.o" \
 "CMakeFiles/game.dir/src/Game.cpp.o" \
+"CMakeFiles/game.dir/src/InputHandler.cpp.o" \
+"CMakeFiles/game.dir/src/Player.cpp.o" \
 "CMakeFiles/game.dir/src/main.cpp.o"
 
 # External object files for target game
 game_EXTERNAL_OBJECTS =
 
-game: CMakeFiles/game.dir/src/Block.cpp.o
 game: CMakeFiles/game.dir/src/Game.cpp.o
+game: CMakeFiles/game.dir/src/InputHandler.cpp.o
+game: CMakeFiles/game.dir/src/Player.cpp.o
 game: CMakeFiles/game.dir/src/main.cpp.o
 game: CMakeFiles/game.dir/build.make
 game: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.6.1
 game: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1
 game: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.6.1
 game: CMakeFiles/game.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/faustas/Projects/c++/2Dgame/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable game"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/faustas/Projects/c++/2Dgame/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable game"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/game.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
