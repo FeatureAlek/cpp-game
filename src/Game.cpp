@@ -1,10 +1,13 @@
 #include "Game.hpp"
 
 Game::Game()
-: window(sf::VideoMode(768,576), "2D Game"),
+: window(sf::VideoMode(768,576), "2D Game", sf::Style::Titlebar | sf::Style::Close),
   player(350.f, 250.f, sf::Color::Green)
-{}
+{
+    window.setFramerateLimit(60); // 60 FPS
+}
 
+// Game loop
 void Game::run()
 {
     while(window.isOpen())
@@ -15,6 +18,7 @@ void Game::run()
     }
 }
 
+// Window close button
 void Game::processEvents()
 {
     sf::Event event;
