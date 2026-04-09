@@ -1,0 +1,4 @@
+/home/faustas/Projects/c++/2Dgame/build/CMakeFiles/game.dir
+/home/faustas/Projects/c++/2Dgame/build/CMakeFiles/run.dir
+/home/faustas/Projects/c++/2Dgame/build/CMakeFiles/edit_cache.dir
+/home/faustas/Projects/c++/2Dgame/build/CMakeFiles/rebuild_cache.dir
