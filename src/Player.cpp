@@ -29,8 +29,15 @@ bool Player::isOnGround(const sf::RectangleShape& ground)
 void Player::stopFalling(const sf::RectangleShape& ground)
 {
     velocityY = 0.f;
-
+    onGround = true;
     float groundTop = ground.getPosition().y;
     float playerHeight = shape.getSize().y;
     shape.setPosition(shape.getPosition().x, groundTop - playerHeight);
+}
+
+void Player::jump(){
+    if(onGround){
+        velocityY = -500.0f; // jump height/strength
+        onGround = false;
+    }
 }

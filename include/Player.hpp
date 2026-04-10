@@ -14,11 +14,14 @@ public:
     void applyGravity(float dt);
     bool isOnGround(const sf::RectangleShape& ground);
     void stopFalling(const sf::RectangleShape& ground);
+    
+    void jump();
 
 private:
     sf::RectangleShape shape;
     float speed = 200.f;
     float velocityY = 0.f; // speed downwards
     float gravity = 800.f; // downward acceleration
+    bool onGround = false;
 
 };

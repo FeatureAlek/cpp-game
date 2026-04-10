@@ -39,6 +39,7 @@ void Game::update()
 
     if (input.isLeftPressed())   player.moveLeft(dt);
     if (input.isRightPressed())  player.moveRight(dt);
+    if (input.isJumpPressed())   player.jump();
 
     player.applyGravity(dt);
 
