@@ -6,6 +6,5 @@ class InputHandler{
     
         bool isLeftPressed();
         bool isRightPressed();
-        bool isUpPressed();
 
 };

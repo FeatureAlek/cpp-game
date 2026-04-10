@@ -16,6 +16,8 @@ private:
 
     sf::Clock clock;
     sf::RenderWindow window;
+    sf::RectangleShape ground;
+
     Player player;
     InputHandler input;
 };

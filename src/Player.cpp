@@ -9,9 +9,28 @@ Player::Player(float x, float y, sf::Color color)
 
 void Player::moveLeft(float dt)  { shape.move(-speed * dt, 0.f); }
 void Player::moveRight(float dt) { shape.move( speed * dt, 0.f); }
-void Player::moveUp(float dt)    { shape.move(0.f, -speed * dt); }
 
 void Player::draw(sf::RenderWindow& window)
 {
     window.draw(shape);
+}
+
+void Player::applyGravity(float dt)
+{
+    velocityY += gravity * dt;
+    shape.move(0.f, velocityY * dt);
+}
+
+bool Player::isOnGround(const sf::RectangleShape& ground)
+{
+    return shape.getGlobalBounds().intersects(ground.getGlobalBounds());
+}
+
+void Player::stopFalling(const sf::RectangleShape& ground)
+{
+    velocityY = 0.f;
+
+    float groundTop = ground.getPosition().y;
+    float playerHeight = shape.getSize().y;
+    shape.setPosition(shape.getPosition().x, groundTop - playerHeight);
 }

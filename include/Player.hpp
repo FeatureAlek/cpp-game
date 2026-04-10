@@ -9,12 +9,16 @@ public:
 
     void moveLeft(float dt);
     void moveRight(float dt);
-    void moveUp(float dt);
-
     void draw(sf::RenderWindow& window);
+    
+    void applyGravity(float dt);
+    bool isOnGround(const sf::RectangleShape& ground);
+    void stopFalling(const sf::RectangleShape& ground);
 
 private:
     sf::RectangleShape shape;
     float speed = 200.f;
+    float velocityY = 0.f; // speed downwards
+    float gravity = 800.f; // downward acceleration
 
 };

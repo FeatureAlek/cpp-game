@@ -6,6 +6,3 @@ bool InputHandler::isLeftPressed() {
 bool InputHandler::isRightPressed() {
     return sf::Keyboard::isKeyPressed(sf::Keyboard::D);
 }
-bool InputHandler::isUpPressed() {
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::W);
-}
