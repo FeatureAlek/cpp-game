@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
 #include "InputHandler.hpp"
+#include "CollisionManager.hpp"
 
 class Game 
 {
@@ -20,4 +21,5 @@ private:
 
     Player player;
     InputHandler input;
+    CollisionManager collision;
 };

@@ -41,3 +41,13 @@ void Player::jump(){
         onGround = false;
     }
 }
+
+sf::FloatRect Player::getBounds()
+{
+    return shape.getGlobalBounds();
+}
+
+void Player::setPositionX(float x)
+{
+    shape.setPosition(x, shape.getPosition().y);
+}

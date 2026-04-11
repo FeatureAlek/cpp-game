@@ -42,11 +42,7 @@ void Game::update()
     if (input.isJumpPressed())   player.jump();
 
     player.applyGravity(dt);
-
-    if(player.isOnGround(ground))
-    {
-        player.stopFalling(ground);
-    }
+    collision.check(player, ground, window);
 
 }
 
