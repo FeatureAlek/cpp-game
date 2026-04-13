@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 project(2DGame)
 set(CMAKE_CXX_STANDARD 17)
-find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(SFML 3 COMPONENTS Graphics Window System QUIET)
+if(NOT SFML_FOUND)
+    find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+endif()
 
 # update if needed
 include_directories(include)
@@ -10,7 +15,15 @@ include_directories(include)
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp)
 add_executable(game ${SRC_FILES})
 
-target_link_libraries(game sfml-graphics sfml-window sfml-system)
+if(MINGW)
+    target_link_options(game PRIVATE -static-libgcc -static-libstdc++)
+endif()
+
+if(TARGET SFML::Graphics)
+    target_link_libraries(game PRIVATE SFML::Graphics SFML::Window SFML::System)
+else()
+    target_link_libraries(game PRIVATE sfml-graphics sfml-window sfml-system)
+endif()
 
 add_custom_target(run
     COMMAND game
