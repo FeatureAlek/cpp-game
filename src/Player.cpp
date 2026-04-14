@@ -51,3 +51,25 @@ void Player::setPositionX(float x)
 {
     shape.setPosition(x, shape.getPosition().y);
 }
+
+void Player::setPositionY(float y)
+{
+    shape.setPosition(shape.getPosition().x, y);
+}
+
+// setters
+
+void Player::setVelocityX(float v)
+{
+    velocityX = v;
+}
+
+void Player::setVelocityY(float v)
+{
+    velocityY = v;
+}
+
+void Player::setOnGround(bool v)
+{
+    onGround = v;
+}

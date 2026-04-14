@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <vector>
 #include "Player.hpp"
 #include "InputHandler.hpp"
 #include "CollisionManager.hpp"
@@ -18,6 +19,8 @@ private:
     sf::Clock clock;
     sf::RenderWindow window;
     sf::RectangleShape ground;
+    
+    std::vector<sf::RectangleShape> platforms;
 
     Player player;
     InputHandler input;

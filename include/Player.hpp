@@ -21,11 +21,20 @@ public:
     
     sf::FloatRect getBounds();
     void setPositionX(float x);
+    void setPositionY(float y);
+    
+
+    // setters
+
+    void setVelocityX(float v);
+    void setVelocityY(float v);
+    void setOnGround(bool v);
 
 private:
 
     float speed = 200.f;
-    float velocityY = 0.f; // speed downwards
+    float velocityY = 0.f;
+    float velocityX = 0.f; 
     float gravity = 800.f; // downward acceleration
     bool onGround = false;
 
