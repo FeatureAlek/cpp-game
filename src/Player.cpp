@@ -37,7 +37,7 @@ void Player::stopFalling(const sf::RectangleShape& ground)
 
 void Player::jump(){
     if(onGround){
-        velocityY = -500.0f; // jump height/strength
+        velocityY = -500.0f;
         onGround = false;
     }
 }
@@ -46,6 +46,7 @@ sf::FloatRect Player::getBounds()
 {
     return shape.getGlobalBounds();
 }
+// setters
 
 void Player::setPositionX(float x)
 {
@@ -56,8 +57,6 @@ void Player::setPositionY(float y)
 {
     shape.setPosition(shape.getPosition().x, y);
 }
-
-// setters
 
 void Player::setVelocityX(float v)
 {

@@ -19,6 +19,7 @@ void CollisionManager::check(Player &player, const sf::RectangleShape &ground, s
         player.setPositionX(window.getSize().x - playerBounds.width);
 }
 
+// AABB minimum overlap method
 void CollisionManager::resolveCollision(Player &player, const sf::RectangleShape &platform)
 {
     sf::FloatRect playerBounds = player.getBounds();

@@ -20,12 +20,10 @@ public:
     void stopFalling(const sf::RectangleShape& ground);
     
     sf::FloatRect getBounds();
+    // setters
     void setPositionX(float x);
     void setPositionY(float y);
     
-
-    // setters
-
     void setVelocityX(float v);
     void setVelocityY(float v);
     void setOnGround(bool v);
