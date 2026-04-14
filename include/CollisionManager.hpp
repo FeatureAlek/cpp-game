@@ -8,5 +8,5 @@ class CollisionManager
 public:
     void check(Player& player, const sf::RectangleShape& ground, std::vector<sf::RectangleShape>& platforms, sf::RenderWindow& window);
 private:
-    
+    void resolveCollision(Player& player, const sf::RectangleShape& platform);
 };
