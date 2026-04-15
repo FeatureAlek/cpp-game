@@ -61,7 +61,8 @@ void Game::update()
 
     playerOne.applyGravity(dt);
     playerTwo.applyGravity(dt);
-    //collision.check(player, ground, platforms, window);
+    collision.check(playerOne, ground, platforms, window);
+    collision.check(playerTwo, ground, platforms, window);
 
     updatePlayer(playerOne, playerOneInput, dt);
     updatePlayer(playerTwo, playerTwoInput, dt);
