@@ -4,7 +4,10 @@
 
 Game::Game()
 : window(sf::VideoMode(768,576), "2D Game", sf::Style::Titlebar | sf::Style::Close),
-  player(350.f, 250.f, sf::Color::Green)
+  playerOne(250.f, 250.f, sf::Color::Green),
+  playerTwo(450.f, 250.f, sf::Color::Blue),
+  playerOneInput(sf::Keyboard::A, sf::Keyboard::D, sf::Keyboard::W),
+  playerTwoInput(sf::Keyboard::Left, sf::Keyboard::Right, sf::Keyboard::Up)
 {
     window.setFramerateLimit(60); // 60 FPS
 
@@ -54,19 +57,21 @@ void Game::update()
 {   
     float dt = clock.restart().asSeconds();
 
-    if (input.isLeftPressed())   player.moveLeft(dt);
-    if (input.isRightPressed())  player.moveRight(dt);
-    if (input.isJumpPressed())   player.jump();
 
-    player.applyGravity(dt);
-    collision.check(player, ground, platforms, window);
 
+    playerOne.applyGravity(dt);
+    playerTwo.applyGravity(dt);
+    //collision.check(player, ground, platforms, window);
+
+    updatePlayer(playerOne, playerOneInput, dt);
+    updatePlayer(playerTwo, playerTwoInput, dt);
 }
 
 void Game::render() 
 {
     window.clear(sf::Color(50, 50, 50));
-    player.draw(window);
+    playerOne.draw(window);
+    playerTwo.draw(window);
     window.draw(ground);
 
     for(auto &platform : platforms){
@@ -74,4 +79,18 @@ void Game::render()
     }
 
     window.display();
+}
+
+void Game::updatePlayer(Player& player, const InputHandler& inputHandler, float dt)
+{
+    if (inputHandler.isLeftPressed())  player.moveLeft(dt);
+    if (inputHandler.isRightPressed()) player.moveRight(dt);
+    if (inputHandler.isJumpPressed())  player.jump();
+
+    player.applyGravity(dt);
+
+    if (player.isOnGround(ground))
+    {
+        player.stopFalling(ground);
+    }
 }

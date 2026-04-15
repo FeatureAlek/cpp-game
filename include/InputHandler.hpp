@@ -1,11 +1,17 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-class InputHandler{
-    public:
-    
-        bool isLeftPressed();
-        bool isRightPressed();
-        bool isJumpPressed();
+class InputHandler
+{
+public:
+    InputHandler(sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key jumpKey);
 
+    bool isLeftPressed() const;
+    bool isRightPressed() const;
+    bool isJumpPressed() const;
+
+private:
+    sf::Keyboard::Key leftKey;
+    sf::Keyboard::Key rightKey;
+    sf::Keyboard::Key jumpKey;
 };

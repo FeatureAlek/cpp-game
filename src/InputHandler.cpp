@@ -1,11 +1,21 @@
 #include "InputHandler.hpp"
 
-bool InputHandler::isLeftPressed() {
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+InputHandler::InputHandler(sf::Keyboard::Key leftKey, sf::Keyboard::Key rightKey, sf::Keyboard::Key jumpKey)
+    : leftKey(leftKey), rightKey(rightKey), jumpKey(jumpKey)
+{
 }
-bool InputHandler::isRightPressed() {
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+
+bool InputHandler::isLeftPressed() const
+{
+    return sf::Keyboard::isKeyPressed(leftKey);
 }
-bool InputHandler::isJumpPressed(){
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+
+bool InputHandler::isRightPressed() const
+{
+    return sf::Keyboard::isKeyPressed(rightKey);
+}
+
+bool InputHandler::isJumpPressed() const
+{
+    return sf::Keyboard::isKeyPressed(jumpKey);
 }
