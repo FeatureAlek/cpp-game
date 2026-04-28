@@ -11,6 +11,7 @@ class Game
 public:
     Game();
     void run();
+    void respawn();
 
 private:
     void processEvents();
@@ -27,6 +28,7 @@ private:
 
     Player playerOne;
     Player playerTwo;
+    std::vector<Player*> players;
     InputHandler playerOneInput;
     InputHandler playerTwoInput;
     CollisionManager collision;

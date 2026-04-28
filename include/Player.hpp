@@ -1,10 +1,16 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <unordered_set>
+#include "Hazard.hpp"
 
 class Player
 {
 public:
     Player(float x, float y, sf::Color color);
+
+    void respawn();
+    bool canTouch(HazardType type) const;
+    void addAllowed(HazardType type);
 
     // movement
     void moveLeft(float dt);
@@ -30,12 +36,18 @@ public:
 
 private:
 
+    float spawnX;
+    float spawnY;
+
     float speed = 200.f;
     float velocityY = 0.f;
     float velocityX = 0.f; 
+
     float gravity = 800.f; // downward acceleration
     bool onGround = false;
 
     sf::RectangleShape shape;
+
+    std::unordered_set<HazardType> allowedHazards;
 
 };

@@ -61,3 +61,8 @@ void CollisionManager::resolveCollision(Player &player, const sf::RectangleShape
         player.setVelocityY(0.f);
     }
 }
+
+bool CollisionManager::checkHazardCollision(Player& player, Hazard& hazard){
+    
+    return player.getBounds().intersects(hazard.getBounds());
+}

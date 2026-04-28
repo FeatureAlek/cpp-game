@@ -5,6 +5,11 @@ Player::Player(float x, float y, sf::Color color)
     shape.setSize(sf::Vector2f(50.f,50.f));
     shape.setFillColor(color);
     shape.setPosition(x,y);
+
+    // save spawn position
+    spawnX = x;
+    spawnY = y;
+
 }
 
 void Player::moveLeft(float dt)  { shape.move(-speed * dt, 0.f); }
@@ -71,4 +76,21 @@ void Player::setVelocityY(float v)
 void Player::setOnGround(bool v)
 {
     onGround = v;
+}
+
+bool Player::canTouch(HazardType type) const
+{
+    return allowedHazards.find(type) != allowedHazards.end();
+}
+
+void Player::addAllowed(HazardType type)
+{
+    allowedHazards.insert(type);
+}
+
+void Player::respawn(){
+
+    shape.setPosition(spawnX, spawnY);
+    velocityX = 0.f;
+    velocityY = 0.f;
 }
