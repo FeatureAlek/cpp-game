@@ -1,10 +1,11 @@
 #include "Game.hpp"
+#include "Hazard.hpp"
 // for debugging 
 #include <iostream>
 
 Game::Game()
 : window(sf::VideoMode(768,576), "2D Game", sf::Style::Titlebar | sf::Style::Close),
-  playerOne(250.f, 250.f, sf::Color::Green),
+  playerOne(450.f, 250.f, sf::Color::Red),
   playerTwo(450.f, 250.f, sf::Color::Blue),
   playerOneInput(sf::Keyboard::A, sf::Keyboard::D, sf::Keyboard::W),
   playerTwoInput(sf::Keyboard::Left, sf::Keyboard::Right, sf::Keyboard::Up)
@@ -15,6 +16,7 @@ Game::Game()
     ground.setFillColor(sf::Color(100, 70, 40));
     ground.setPosition(0.f, 550.f);
     
+    /* TODO - PADARYTI EMPLACE BACK? VIETOJ PUSH BACK    */
     // platforms init
     sf::RectangleShape p1;
     p1.setSize(sf::Vector2f(200.f, 20.f));
@@ -28,6 +30,10 @@ Game::Game()
     p2.setPosition(400.f, 300.f);
     platforms.push_back(p2);
 
+    // hazards init
+    hazards.emplace_back(200.f, 500.f, 100.f, 50.f, HazardType::playerOneRiver);
+    hazards.emplace_back(400.f, 500.f, 100.f, 50.f, HazardType::playerTwoRiver);
+    hazards.emplace_back(600.f, 500.f, 100.f, 50.f, HazardType::generalRiver);
 
 }
 
@@ -77,6 +83,10 @@ void Game::render()
 
     for(auto &platform : platforms){
         window.draw(platform);
+    }
+
+    for(auto &h : hazards){
+        h.draw(window);
     }
 
     window.display();

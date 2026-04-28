@@ -4,6 +4,7 @@
 #include "Player.hpp"
 #include "InputHandler.hpp"
 #include "CollisionManager.hpp"
+#include "Hazard.hpp"
 
 class Game 
 {
@@ -22,6 +23,7 @@ private:
     sf::RectangleShape ground;
     
     std::vector<sf::RectangleShape> platforms;
+    std::vector<Hazard> hazards;
 
     Player playerOne;
     Player playerTwo;
