@@ -23,8 +23,8 @@ private:
     sf::RenderWindow window;
     sf::RectangleShape ground;
     
-    std::vector<sf::RectangleShape> platforms;
     std::vector<Hazard> hazards;
+    std::vector<Platform> platforms;
 
     Player playerOne;
     Player playerTwo;

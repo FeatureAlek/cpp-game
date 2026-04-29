@@ -1,6 +1,6 @@
 #include "CollisionManager.hpp"
 
-void CollisionManager::check(Player &player, const sf::RectangleShape &ground, std::vector<sf::RectangleShape> &platforms, sf::RenderWindow &window)
+void CollisionManager::check(Player &player, const sf::RectangleShape &ground, std::vector<Platform>& platforms, sf::RenderWindow &window)
 {
     sf::FloatRect playerBounds = player.getBounds();
 
@@ -10,7 +10,7 @@ void CollisionManager::check(Player &player, const sf::RectangleShape &ground, s
 
     // platforms
     for (auto& platform : platforms)
-        resolveCollision(player, platform);
+        resolveCollision(player, platform.getBounds());
 
     // window - walls
     if (playerBounds.left < 0)
@@ -20,10 +20,9 @@ void CollisionManager::check(Player &player, const sf::RectangleShape &ground, s
 }
 
 // AABB minimum overlap method
-void CollisionManager::resolveCollision(Player &player, const sf::RectangleShape &platform)
+void CollisionManager::resolveCollision(Player& player, const sf::FloatRect& platformBounds)
 {
     sf::FloatRect playerBounds = player.getBounds();
-    sf::FloatRect platformBounds = platform.getGlobalBounds();
 
     if (!playerBounds.intersects(platformBounds)) return;
 
@@ -50,15 +49,23 @@ void CollisionManager::resolveCollision(Player &player, const sf::RectangleShape
         player.setVelocityX(0.f);
     }
     else if (minOverlap == overlapTop)
-    {
-        player.setPositionY(platformBounds.top - playerBounds.height);
-        player.setVelocityY(0.f);
-        player.setOnGround(true);
+    {   
+        float playerBottomBefore = player.getBounds().top + player.getBounds().height - player.getVelocityY();
+
+        if (player.getVelocityY() >= 0.f)
+        {
+            player.setPositionY(platformBounds.top - playerBounds.height);
+            player.setVelocityY(0.f);
+            player.setOnGround(true);
+        }
     }
     else if (minOverlap == overlapBottom)
     {
-        player.setPositionY(platformBottomY);
-        player.setVelocityY(0.f);
+        if (player.getVelocityY() < 0.f)
+        {
+            player.setPositionY(platformBottomY);
+            player.setVelocityY(0.f);
+        }
     }
 }
 

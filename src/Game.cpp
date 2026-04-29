@@ -1,5 +1,6 @@
 #include "Game.hpp"
 #include "Hazard.hpp"
+#include "Platform.hpp"
 // for debugging
 #include <iostream>
 
@@ -16,19 +17,9 @@ Game::Game()
     ground.setFillColor(sf::Color(100, 70, 40));
     ground.setPosition(0.f, 550.f);
 
-    /* TODO - PADARYTI EMPLACE BACK? VIETOJ PUSH BACK    */
     // platforms init
-    sf::RectangleShape p1;
-    p1.setSize(sf::Vector2f(200.f, 20.f));
-    p1.setFillColor(sf::Color(100, 70, 40));
-    p1.setPosition(100.f, 400.f);
-    platforms.push_back(p1);
-
-    sf::RectangleShape p2;
-    p2.setSize(sf::Vector2f(200.f, 20.f));
-    p2.setFillColor(sf::Color(100, 70, 40));
-    p2.setPosition(400.f, 300.f);
-    platforms.push_back(p2);
+    platforms.emplace_back(100.f, 400.f, 200.f, 20.f, PlatformType::notMoving);
+    platforms.emplace_back(400.f, 300.f, 200.f, 20.f, PlatformType::movingVertically);
 
     // hazards init
     hazards.emplace_back(200.f, 500.f, 100.f, 50.f, HazardType::playerOneRiver);
@@ -70,6 +61,11 @@ void Game::update()
 {
     float dt = clock.restart().asSeconds();
 
+    for(auto &platform : platforms)
+    {
+        platform.update(dt); // tai cia rekursyviai kviesim?
+    }
+
     for (auto* p : players)
     {
         p->applyGravity(dt);
@@ -97,13 +93,15 @@ void Game::update()
 void Game::render()
 {
     window.clear(sf::Color(50, 50, 50));
+    
     playerOne.draw(window);
     playerTwo.draw(window);
+    
     window.draw(ground);
 
     for (auto &platform : platforms)
     {
-        window.draw(platform);
+        platform.draw(window);
     }
 
     for (auto &h : hazards)

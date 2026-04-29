@@ -3,9 +3,9 @@
 
 enum class HazardType
 {
-    playerOneRiver, // color red
-    playerTwoRiver, // color blue
-    generalRiver // color green
+    playerOneRiver,
+    playerTwoRiver,
+    generalRiver 
 };
 
 class Hazard

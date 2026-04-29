@@ -51,6 +51,11 @@ sf::FloatRect Player::getBounds()
 {
     return shape.getGlobalBounds();
 }
+
+float Player::getVelocityY() const
+{
+    return velocityY;
+}
 // setters
 
 void Player::setPositionX(float x)

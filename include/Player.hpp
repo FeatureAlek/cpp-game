@@ -26,6 +26,7 @@ public:
     void stopFalling(const sf::RectangleShape& ground);
     
     sf::FloatRect getBounds();
+    float getVelocityY() const;
     // setters
     void setPositionX(float x);
     void setPositionY(float y);
