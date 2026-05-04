@@ -14,6 +14,7 @@ include_directories(include)
 # directory - what files to compile; ./game to run it
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp)
 add_executable(game ${SRC_FILES})
+target_compile_definitions(game PRIVATE GAME_ASSET_DIR="${CMAKE_SOURCE_DIR}/assets")
 
 if(MINGW)
     target_link_options(game PRIVATE -static-libgcc -static-libstdc++)
@@ -29,11 +30,4 @@ add_custom_target(run
     COMMAND game
     DEPENDS game
     WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
-)
-
-# assets in build dir
-add_custom_command(TARGET game POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/assets
-    $<TARGET_FILE_DIR:game>/assets
 )

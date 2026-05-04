@@ -6,8 +6,8 @@
 
 Game::Game()
     : window(sf::VideoMode(768, 576), "2D Game", sf::Style::Titlebar | sf::Style::Close),
-      playerOne(450.f, 250.f, sf::Color::Red),
-      playerTwo(450.f, 250.f, sf::Color::Blue),
+      playerOne(120.f, 500.f, sf::Color::Red, "warmsprite.png"),
+      playerTwo(520.f, 500.f, sf::Color::Blue),
       playerOneInput(sf::Keyboard::A, sf::Keyboard::D, sf::Keyboard::W),
       playerTwoInput(sf::Keyboard::Left, sf::Keyboard::Right, sf::Keyboard::Up)
 {
@@ -60,20 +60,22 @@ void Game::processEvents()
 void Game::update()
 {
     float dt = clock.restart().asSeconds();
+    if (dt > 0.05f)
+        dt = 0.05f;
 
     for(auto &platform : platforms)
     {
         platform.update(dt); // tai cia rekursyviai kviesim?
     }
 
+    updatePlayer(playerOne, playerOneInput, dt);
+    updatePlayer(playerTwo, playerTwoInput, dt);
+
     for (auto* p : players)
     {
         p->applyGravity(dt);
         collision.check(*p, ground, platforms, window);
     }
-
-    updatePlayer(playerOne, playerOneInput, dt);
-    updatePlayer(playerTwo, playerTwoInput, dt);
 
     for (auto *p : players)
     {
@@ -88,15 +90,15 @@ void Game::update()
             }
         }
     }
+
+    for (auto *p : players)
+        p->updateAnimation(dt);
 }
 
 void Game::render()
 {
     window.clear(sf::Color(50, 50, 50));
-    
-    playerOne.draw(window);
-    playerTwo.draw(window);
-    
+
     window.draw(ground);
 
     for (auto &platform : platforms)
@@ -109,6 +111,9 @@ void Game::render()
         h.draw(window);
     }
 
+    playerTwo.draw(window);
+    playerOne.draw(window);
+
     window.display();
 }
 
@@ -120,11 +125,4 @@ void Game::updatePlayer(Player &player, const InputHandler &inputHandler, float 
         player.moveRight(dt);
     if (inputHandler.isJumpPressed())
         player.jump();
-
-    player.applyGravity(dt);
-
-    if (player.isOnGround(ground))
-    {
-        player.stopFalling(ground);
-    }
 }

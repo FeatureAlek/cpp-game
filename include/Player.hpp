@@ -1,12 +1,13 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <string>
 #include <unordered_set>
 #include "Hazard.hpp"
 
 class Player
 {
 public:
-    Player(float x, float y, sf::Color color);
+    Player(float x, float y, sf::Color color, const std::string& spriteFile = "");
 
     void respawn();
     bool canTouch(HazardType type) const;
@@ -19,6 +20,7 @@ public:
 
     // rendering
     void draw(sf::RenderWindow& window);
+    void updateAnimation(float dt);
     
     // collision
     void applyGravity(float dt);
@@ -36,6 +38,9 @@ public:
     void setOnGround(bool v);
 
 private:
+    void syncVisualPosition();
+    void updateTextureRect(int frame = -1);
+    void createSpriteSheet(const std::string& spriteFile);
 
     float spawnX;
     float spawnY;
@@ -46,8 +51,16 @@ private:
 
     float gravity = 800.f; // downward acceleration
     bool onGround = false;
+    bool hasSprite = false;
+    bool facingRight = true;
+
+    float animationTimer = 0.f;
+    float previousX = 0.f;
+    std::size_t animationIndex = 0;
 
     sf::RectangleShape shape;
+    sf::Texture spriteSheet;
+    sf::Sprite sprite;
 
     std::unordered_set<HazardType> allowedHazards;
 
