@@ -7,7 +7,7 @@
 Game::Game()
     : window(sf::VideoMode(768, 576), "2D Game", sf::Style::Titlebar | sf::Style::Close),
       playerOne(120.f, 500.f, sf::Color::Red, "warmsprite.png"),
-      playerTwo(520.f, 500.f, sf::Color::Blue),
+      playerTwo(520.f, 500.f, sf::Color::Blue, "coldsprite.png"),
       playerOneInput(sf::Keyboard::A, sf::Keyboard::D, sf::Keyboard::W),
       playerTwoInput(sf::Keyboard::Left, sf::Keyboard::Right, sf::Keyboard::Up)
 {
