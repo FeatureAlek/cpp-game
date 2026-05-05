@@ -3,6 +3,7 @@
 void CollisionManager::check(Player &player, const sf::RectangleShape &ground, std::vector<Platform>& platforms, sf::RenderWindow &window)
 {
     sf::FloatRect playerBounds = player.getBounds();
+    sf::FloatRect groundBounds = ground.getGlobalBounds();
 
     // window - ground
     if (player.isOnGround(ground))
@@ -15,8 +16,8 @@ void CollisionManager::check(Player &player, const sf::RectangleShape &ground, s
     // window - walls
     if (playerBounds.left < 0)
         player.setPositionX(0);
-    if (playerBounds.left + playerBounds.width > window.getSize().x)
-        player.setPositionX(window.getSize().x - playerBounds.width);
+    if (playerBounds.left + playerBounds.width > groundBounds.width)
+        player.setPositionX(groundBounds.width - playerBounds.width);
 }
 
 // AABB minimum overlap method
