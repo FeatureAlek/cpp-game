@@ -59,6 +59,7 @@ private:
     std::size_t animationIndex = 0;
 
     sf::RectangleShape shape;
+    
     sf::Texture spriteSheet;
     sf::Sprite sprite;
 

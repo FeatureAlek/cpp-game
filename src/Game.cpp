@@ -65,7 +65,7 @@ void Game::update()
 
     for(auto &platform : platforms)
     {
-        platform.update(dt); // tai cia rekursyviai kviesim?
+        platform.update(dt);
     }
 
     updatePlayer(playerOne, playerOneInput, dt);

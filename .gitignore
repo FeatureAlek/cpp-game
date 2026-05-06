@@ -8,3 +8,5 @@ build/
 # Object files
 *.o
 *.obj
+
+.vscode/

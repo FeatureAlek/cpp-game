@@ -1,7 +1,5 @@
 #include "Player.hpp"
-
 #include <cmath>
-#include <string>
 
 namespace
 {
