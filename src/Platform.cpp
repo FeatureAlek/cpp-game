@@ -1,4 +1,44 @@
 #include "Platform.hpp"
+#include <string>
+
+namespace
+{
+sf::Texture* getTileTexture()
+{
+    static sf::Texture texture;
+    static bool attemptedLoad = false;
+
+    if (!attemptedLoad)
+    {
+        texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/tile.png");
+        texture.setRepeated(true);
+        attemptedLoad = true;
+    }
+
+    if (texture.getSize().x == 0 || texture.getSize().y == 0)
+        return nullptr;
+
+    return &texture;
+}
+
+sf::Texture* getPlatformTexture()
+{
+    static sf::Texture texture;
+    static bool attemptedLoad = false;
+
+    if (!attemptedLoad)
+    {
+        texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/platform.png");
+        texture.setRepeated(true);
+        attemptedLoad = true;
+    }
+
+    if (texture.getSize().x == 0 || texture.getSize().y == 0)
+        return nullptr;
+
+    return &texture;
+}
+}
 
 Platform::Platform(float x, float y, float width, float height, PlatformType type)
 {
@@ -6,7 +46,22 @@ Platform::Platform(float x, float y, float width, float height, PlatformType typ
 
     platform.setSize(sf::Vector2f(width, height));
     platform.setPosition(x,y);
-    platform.setFillColor(sf::Color(100, 70, 40));
+    sf::Texture* texture = nullptr;
+    if (type == PlatformType::movingVertically)
+        texture = getPlatformTexture();
+    else
+        texture = getTileTexture();
+
+    if (texture)
+    {
+        platform.setTexture(texture);
+        platform.setTextureRect(sf::IntRect(0, 0, static_cast<int>(width), static_cast<int>(height)));
+        platform.setFillColor(sf::Color::White);
+    }
+    else
+    {
+        platform.setFillColor(sf::Color(100, 70, 40));
+    }
 
     startY = y;
 }

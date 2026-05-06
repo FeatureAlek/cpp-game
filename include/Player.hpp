@@ -37,6 +37,7 @@ public:
     void setVelocityY(float v);
     void setOnGround(bool v);
 
+    void setSpawnPoint(float x, float y);
 private:
     void syncVisualPosition();
     void updateTextureRect(int frame = -1);

@@ -1,8 +1,31 @@
 #include "Game.hpp"
 #include "Hazard.hpp"
 #include "Platform.hpp"
+#include <fstream>
+#include <string>
 // for debugging
 #include <iostream>
+
+namespace
+{
+sf::Texture* getTileTexture()
+{
+    static sf::Texture texture;
+    static bool attemptedLoad = false;
+
+    if (!attemptedLoad)
+    {
+        texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/tile.png");
+        texture.setRepeated(true);
+        attemptedLoad = true;
+    }
+
+    if (texture.getSize().x == 0 || texture.getSize().y == 0)
+        return nullptr;
+
+    return &texture;
+}
+}
 
 Game::Game()
     : window(sf::VideoMode(768, 576), "2D Game", sf::Style::Titlebar | sf::Style::Close),
@@ -16,15 +39,12 @@ Game::Game()
     ground.setSize(sf::Vector2f(768.f, 50.f));
     ground.setFillColor(sf::Color(100, 70, 40));
     ground.setPosition(0.f, 550.f);
-
-    // platforms init
-    platforms.emplace_back(100.f, 400.f, 200.f, 20.f, PlatformType::notMoving);
-    platforms.emplace_back(400.f, 300.f, 200.f, 20.f, PlatformType::movingVertically);
-
-    // hazards init
-    hazards.emplace_back(200.f, 500.f, 100.f, 50.f, HazardType::playerOneRiver);
-    hazards.emplace_back(400.f, 500.f, 100.f, 50.f, HazardType::playerTwoRiver);
-    hazards.emplace_back(600.f, 500.f, 100.f, 50.f, HazardType::generalRiver);
+    if (sf::Texture* texture = getTileTexture())
+    {
+        ground.setTexture(texture);
+        ground.setTextureRect(sf::IntRect(0, 0, 768, 50));
+        ground.setFillColor(sf::Color::White);
+    }
 
     // Player1 Player2 added into vector
     players.push_back(&playerOne);
@@ -33,6 +53,8 @@ Game::Game()
     // Player Rivers
     playerOne.addAllowed(HazardType::playerOneRiver);
     playerTwo.addAllowed(HazardType::playerTwoRiver);
+
+    loadMap("map.txt");
 }
 
 // Game loop
@@ -125,4 +147,78 @@ void Game::updatePlayer(Player &player, const InputHandler &inputHandler, float 
         player.moveRight(dt);
     if (inputHandler.isJumpPressed())
         player.jump();
+}
+
+void Game::loadMap(const std::string& name)
+{
+    platforms.clear();
+    hazards.clear();
+
+    std::ifstream in(std::string(GAME_ASSET_DIR) + "/" + name);
+    if (!in)
+        return;
+
+    std::vector<std::string> rows;
+    std::string line;
+    const float tile = 32.f;
+
+    while (std::getline(in, line))
+        rows.push_back(line);
+
+    if (rows.empty())
+        return;
+
+    const float mapWidth = rows[0].size() * tile;
+    if (mapWidth > ground.getSize().x)
+    {
+        ground.setSize(sf::Vector2f(mapWidth, ground.getSize().y));
+        if (sf::Texture* texture = getTileTexture())
+        {
+            ground.setTexture(texture);
+            ground.setTextureRect(sf::IntRect(0, 0, static_cast<int>(mapWidth), static_cast<int>(ground.getSize().y)));
+            ground.setFillColor(sf::Color::White);
+        }
+
+        const float baseViewWidth = 768.f;
+        const float baseViewHeight = 576.f;
+        const float scale = mapWidth / baseViewWidth;
+        sf::View view(sf::FloatRect(0.f, 0.f, mapWidth, baseViewHeight * scale));
+        window.setView(view);
+    }
+
+    const float yOffset = ground.getPosition().y - rows.size() * tile;
+
+    for (std::size_t row = 0; row < rows.size(); ++row)
+    {
+        for (std::size_t col = 0; col < rows[row].size(); ++col)
+        {
+            float x = static_cast<float>(col) * tile;
+            float y = yOffset + static_cast<float>(row) * tile;
+
+            switch (rows[row][col])
+            {
+            case '3': platforms.emplace_back(x, y, tile, tile, PlatformType::notMoving); break;
+            case '4': platforms.emplace_back(x, y, tile, tile, PlatformType::movingVertically); break;
+            case '5': hazards.emplace_back(x, y, tile, tile, HazardType::playerOneRiver); break;
+            case '6': hazards.emplace_back(x, y, tile, tile, HazardType::playerTwoRiver); break;
+            case '7': hazards.emplace_back(x, y, tile, tile, HazardType::generalRiver); break;
+            case '1':
+                playerOne.setSpawnPoint(
+                    x + (tile - playerOne.getBounds().width) * 0.5f,
+                    y + tile - playerOne.getBounds().height);
+                break;
+            case '2':
+                playerTwo.setSpawnPoint(
+                    x + (tile - playerTwo.getBounds().width) * 0.5f,
+                    y + tile - playerTwo.getBounds().height);
+                break;
+            case '.':
+            case '8':
+                break;
+            }
+        }
+    }
+
+    playerOne.respawn();
+    playerTwo.respawn();
 }

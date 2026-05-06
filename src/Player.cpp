@@ -177,6 +177,11 @@ void Player::addAllowed(HazardType type)
     allowedHazards.insert(type);
 }
 
+void Player::setSpawnPoint(float x, float y){
+    spawnX = x;
+    spawnY = y;
+}
+
 void Player::respawn(){
 
     shape.setPosition(spawnX, spawnY);

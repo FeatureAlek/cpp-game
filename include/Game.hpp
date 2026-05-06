@@ -12,6 +12,7 @@ public:
     Game();
     void run();
     void respawn();
+    void loadMap(const std::string& filename);
 
 private:
     void processEvents();
