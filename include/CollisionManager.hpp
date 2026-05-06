@@ -8,7 +8,6 @@
 class CollisionManager
 {
 public:
-    // void check(Player& player, const sf::RectangleShape& ground, std::vector<Platform> &platforms, sf::RenderWindow& window);
     void check(Player& player, std::vector<Platform>& platforms, sf::RenderWindow& window);
     bool checkHazardCollision(Player& player, Hazard& hazard);
 private:

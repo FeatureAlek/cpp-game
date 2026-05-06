@@ -37,8 +37,6 @@ Game::Game()
     window.setFramerateLimit(60); // 60 FPS
 
     ground.setSize(sf::Vector2f(0.f, 0.f));
-    // ground.setFillColor(sf::Color(100, 70, 40));
-    // ground.setPosition(0.f, 550.f);
     if (sf::Texture* texture = getTileTexture())
     {
         ground.setTexture(texture);
@@ -172,24 +170,6 @@ void Game::loadMap(const std::string& name)
         return;
 
     const float mapWidth = rows[0].size() * tile;
-    // if (mapWidth > ground.getSize().x)
-    // {
-    //     ground.setSize(sf::Vector2f(mapWidth, ground.getSize().y));
-    //     if (sf::Texture* texture = getTileTexture())
-    //     {
-    //         ground.setTexture(texture);
-    //         ground.setTextureRect(sf::IntRect(0, 0, static_cast<int>(mapWidth), static_cast<int>(ground.getSize().y)));
-    //         ground.setFillColor(sf::Color::White);
-    //     }
-// 
-    //     const float baseViewWidth = 768.f;
-    //     const float baseViewHeight = 576.f;
-    //     const float scale = mapWidth / baseViewWidth;
-    //     sf::View view(sf::FloatRect(0.f, 0.f, mapWidth, baseViewHeight * scale));
-    //     window.setView(view);
-    // }
-
-    // const float yOffset = ground.getPosition().y - rows.size() * tile;
     const float yOffset = 0.f;
 
     for (std::size_t row = 0; row < rows.size(); ++row)
