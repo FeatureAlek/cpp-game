@@ -46,11 +46,11 @@ private:
     float spawnX;
     float spawnY;
 
-    float speed = 200.f;
+    float speed = 180.f;
     float velocityY = 0.f;
     float velocityX = 0.f; 
 
-    float gravity = 800.f; // downward acceleration
+    float gravity = 1500.f; // downward acceleration
     bool onGround = false;
     bool hasSprite = false;
     bool facingRight = true;

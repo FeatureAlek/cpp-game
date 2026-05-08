@@ -19,10 +19,10 @@ public:
     void update(float dt);
 
 private:
-    float speed = 100.f;
+    float speed = 60.f;
 
     float startY = 0.f;
-    float moveRange = 100.f;
+    float moveRange = 50.f;
     int direction = 1;
 
     sf::RectangleShape platform;

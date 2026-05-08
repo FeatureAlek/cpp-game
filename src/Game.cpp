@@ -8,23 +8,23 @@
 
 namespace
 {
-sf::Texture* getTileTexture()
-{
-    static sf::Texture texture;
-    static bool attemptedLoad = false;
-
-    if (!attemptedLoad)
+    sf::Texture *getTileTexture()
     {
-        texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/tile.png");
-        texture.setRepeated(true);
-        attemptedLoad = true;
+        static sf::Texture texture;
+        static bool attemptedLoad = false;
+
+        if (!attemptedLoad)
+        {
+            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/tile.png");
+            texture.setRepeated(true);
+            attemptedLoad = true;
+        }
+
+        if (texture.getSize().x == 0 || texture.getSize().y == 0)
+            return nullptr;
+
+        return &texture;
     }
-
-    if (texture.getSize().x == 0 || texture.getSize().y == 0)
-        return nullptr;
-
-    return &texture;
-}
 }
 
 Game::Game()
@@ -37,7 +37,7 @@ Game::Game()
     window.setFramerateLimit(60); // 60 FPS
 
     ground.setSize(sf::Vector2f(0.f, 0.f));
-    if (sf::Texture* texture = getTileTexture())
+    if (sf::Texture *texture = getTileTexture())
     {
         ground.setTexture(texture);
         ground.setTextureRect(sf::IntRect(0, 0, 768, 50));
@@ -83,7 +83,7 @@ void Game::update()
     if (dt > 0.05f)
         dt = 0.05f;
 
-    for(auto &platform : platforms)
+    for (auto &platform : platforms)
     {
         platform.update(dt);
     }
@@ -91,7 +91,7 @@ void Game::update()
     updatePlayer(playerOne, playerOneInput, dt);
     updatePlayer(playerTwo, playerTwoInput, dt);
 
-    for (auto* p : players)
+    for (auto *p : players)
     {
         p->applyGravity(dt);
         collision.check(*p, platforms, window);
@@ -150,7 +150,7 @@ void Game::updatePlayer(Player &player, const InputHandler &inputHandler, float 
         player.jump();
 }
 
-void Game::loadMap(const std::string& name)
+void Game::loadMap(const std::string &name)
 {
     platforms.clear();
     hazards.clear();
@@ -181,11 +181,21 @@ void Game::loadMap(const std::string& name)
 
             switch (rows[row][col])
             {
-            case '3': platforms.emplace_back(x, y, tile, tile, PlatformType::notMoving); break;
-            case '4': platforms.emplace_back(x, y, tile, tile, PlatformType::movingVertically); break;
-            case '5': hazards.emplace_back(x, y, tile, tile, HazardType::playerOneRiver); break;
-            case '6': hazards.emplace_back(x, y, tile, tile, HazardType::playerTwoRiver); break;
-            case '7': hazards.emplace_back(x, y, tile, tile, HazardType::generalRiver); break;
+            case '3':
+                platforms.emplace_back(x, y, tile, tile, PlatformType::notMoving);
+                break;
+            case '4':
+                platforms.emplace_back(x, y, tile, tile, PlatformType::movingVertically);
+                break;
+            case '5':
+                hazards.emplace_back(x, y, tile, tile, HazardType::playerOneRiver);
+                break;
+            case '6':
+                hazards.emplace_back(x, y, tile, tile, HazardType::playerTwoRiver);
+                break;
+            case '7':
+                hazards.emplace_back(x, y, tile, tile, HazardType::generalRiver);
+                break;
             case '1':
                 playerOne.setSpawnPoint(
                     x + (tile - playerOne.getBounds().width) * 0.5f,
