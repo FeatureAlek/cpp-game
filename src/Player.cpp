@@ -167,6 +167,7 @@ void Player::setOnGround(bool v)
     onGround = v;
 }
 
+// Hazards
 bool Player::canTouch(HazardType type) const
 {
     return allowedHazards.find(type) != allowedHazards.end();
@@ -176,6 +177,20 @@ void Player::addAllowed(HazardType type)
 {
     allowedHazards.insert(type);
 }
+
+// Gems
+bool Player::canTouch(GemType type) const
+{
+    return allowedGems.find(type) != allowedGems.end();
+}
+
+void Player::addAllowed(GemType type)
+{
+    allowedGems.insert(type);
+}
+
+void Player::addGem() { gemCount++; }
+int Player::getGemCount() const { return gemCount; }
 
 void Player::setSpawnPoint(float x, float y){
     spawnX = x;

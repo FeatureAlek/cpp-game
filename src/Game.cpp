@@ -1,8 +1,6 @@
 #include "Game.hpp"
-#include "Hazard.hpp"
 #include "Platform.hpp"
 #include <fstream>
-#include <string>
 // for debugging
 #include <iostream>
 
@@ -51,6 +49,10 @@ Game::Game()
     // Player Rivers
     playerOne.addAllowed(HazardType::playerOneRiver);
     playerTwo.addAllowed(HazardType::playerTwoRiver);
+
+    // Player Gems
+    playerOne.addAllowed(GemType::redGem);
+    playerTwo.addAllowed(GemType::blueGem);
 
     loadMap("map.txt");
 }
@@ -115,6 +117,21 @@ void Game::update()
     }
 
     for (auto *p : players)
+    {
+        for (auto &g : gems)
+        {
+            if (!g.isCollected() && collision.checkGemCollision(*p, g))
+            {
+                if (p->canTouch(g.getType()))
+                {
+                   g.collect();
+                   p->addGem();
+                }
+            }
+        }
+    }
+
+    for (auto *p : players)
         p->updateAnimation(dt);
 }
 
@@ -133,6 +150,26 @@ void Game::render()
     {
         h.draw(window);
     }
+
+    for (auto &g : gems)
+    {
+        if (!g.isCollected())
+            g.draw(window);
+    }
+
+    #warning: Only for debug - istrinti veliau
+    sf::Font font;
+    font.loadFromFile(std::string(GAME_ASSET_DIR) + "/DEBUGfont.ttf");
+
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(20);
+    text.setFillColor(sf::Color::White);
+    text.setString("P1 gems: " + std::to_string(playerOne.getGemCount()) +
+                "  P2 gems: " + std::to_string(playerTwo.getGemCount()));
+    text.setPosition(10.f, 10.f);
+    window.draw(text);
+    #warning
 
     playerTwo.draw(window);
     playerOne.draw(window);
@@ -205,6 +242,12 @@ void Game::loadMap(const std::string &name)
                 playerTwo.setSpawnPoint(
                     x + (tile - playerTwo.getBounds().width) * 0.5f,
                     y + tile - playerTwo.getBounds().height);
+                break;
+            case 'R':
+                gems.emplace_back(x, y, tile, tile, GemType::redGem);
+                break; 
+            case 'B':
+                gems.emplace_back(x, y, tile, tile, GemType::blueGem);
                 break;
             case '.':
             case '8':

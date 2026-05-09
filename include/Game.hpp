@@ -1,10 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <string>
 #include "Player.hpp"
 #include "InputHandler.hpp"
 #include "CollisionManager.hpp"
 #include "Hazard.hpp"
+#include "Gem.hpp"
 
 class Game 
 {
@@ -26,6 +28,7 @@ private:
     
     std::vector<Hazard> hazards;
     std::vector<Platform> platforms;
+    std::vector<Gem> gems;
 
     Player playerOne;
     Player playerTwo;

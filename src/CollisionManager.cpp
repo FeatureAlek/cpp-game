@@ -67,3 +67,8 @@ bool CollisionManager::checkHazardCollision(Player& player, Hazard& hazard){
     
     return player.getBounds().intersects(hazard.getBounds());
 }
+
+bool CollisionManager::checkGemCollision(Player& player, Gem& gem){
+    
+    return player.getBounds().intersects(gem.getBounds());
+}

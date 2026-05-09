@@ -3,15 +3,23 @@
 #include <string>
 #include <unordered_set>
 #include "Hazard.hpp"
+#include "Gem.hpp"
 
 class Player
 {
 public:
     Player(float x, float y, sf::Color color, const std::string& spriteFile = "");
 
+    // for hazards
     void respawn();
     bool canTouch(HazardType type) const;
     void addAllowed(HazardType type);
+
+    // for gems
+    bool canTouch(GemType) const;
+    void addAllowed(GemType type);
+    void addGem();
+    int getGemCount() const;
 
     // movement
     void moveLeft(float dt);
@@ -43,6 +51,9 @@ private:
     void updateTextureRect(int frame = -1);
     void createSpriteSheet(const std::string& spriteFile);
 
+    // gem counter
+    int gemCount = 0;
+
     float spawnX;
     float spawnY;
 
@@ -65,5 +76,6 @@ private:
     sf::Sprite sprite;
 
     std::unordered_set<HazardType> allowedHazards;
+    std::unordered_set<GemType> allowedGems;
 
 };
