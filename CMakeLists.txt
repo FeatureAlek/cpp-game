@@ -14,6 +14,11 @@ include_directories(include)
 # directory - what files to compile; ./game to run it
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp)
 add_executable(game ${SRC_FILES})
+target_compile_options(game PRIVATE
+    -Wall
+    -Wextra
+    -Wpedantic
+)
 target_compile_definitions(game PRIVATE GAME_ASSET_DIR="${CMAKE_SOURCE_DIR}/assets")
 
 if(MINGW)
