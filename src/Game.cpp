@@ -54,6 +54,10 @@ Game::Game()
     playerOne.addAllowed(GemType::redGem);
     playerTwo.addAllowed(GemType::blueGem);
 
+    // Player Doors
+    playerOne.addAllowed(DoorType::playerOneDoor);
+    playerTwo.addAllowed(DoorType::playerTwoDoor);
+
     loadMap("map.txt");
 }
 
@@ -76,11 +80,28 @@ void Game::processEvents()
     {
         if (event.type == sf::Event::Closed)
             window.close();
+
+        if (event.type == sf::Event::KeyPressed)
+        {
+            if (event.key.code == sf::Keyboard::R && gameState == GameState::Win)
+            {
+                playerOne.resetGemCount();
+                playerTwo.resetGemCount();
+                gameState = GameState::Playing;
+                doorTimer = 0.f;
+                loadMap("map.txt");
+            }
+        }
     }
 }
 
 void Game::update()
 {
+    if (gameState == GameState::Win)
+    {
+        return; // game end
+    }
+
     float dt = clock.restart().asSeconds();
     if (dt > 0.05f)
         dt = 0.05f;
@@ -124,11 +145,42 @@ void Game::update()
             {
                 if (p->canTouch(g.getType()))
                 {
-                   g.collect();
-                   p->addGem();
+                    g.collect();
+                    p->addGem();
                 }
             }
         }
+    }
+
+    bool p1AtDoor = false;
+    bool p2AtDoor = false;
+
+    for (auto *p : players)
+    {
+        for (auto &d : doors)
+        {
+            if (collision.checkDoorCollision(*p, d))
+            {
+                if (p->canTouch(d.getType()) && allGemsCollected())
+                {
+                    d.open();
+                    if (d.getType() == DoorType::playerOneDoor)
+                        p1AtDoor = true;
+                    if (d.getType() == DoorType::playerTwoDoor)
+                        p2AtDoor = true;
+                }
+            }
+        }
+    }
+    if (p1AtDoor && p2AtDoor)
+    {
+        doorTimer += dt;
+        if (doorTimer >= 2.f)
+            gameState = GameState::Win;
+    }
+    else
+    {
+        doorTimer = 0.f;
     }
 
     for (auto *p : players)
@@ -157,24 +209,30 @@ void Game::render()
             g.draw(window);
     }
 
-    #warning: Only for debug - istrinti veliau
-    sf::Font font;
-    font.loadFromFile(std::string(GAME_ASSET_DIR) + "/DEBUGfont.ttf");
-
-    sf::Text text;
-    text.setFont(font);
-    text.setCharacterSize(20);
-    text.setFillColor(sf::Color::White);
-    text.setString("P1 gems: " + std::to_string(playerOne.getGemCount()) +
-                "  P2 gems: " + std::to_string(playerTwo.getGemCount()));
-    text.setPosition(10.f, 10.f);
-    window.draw(text);
-    #warning
+    for (auto &d : doors)
+    {
+        d.draw(window);
+    }
 
     playerTwo.draw(window);
     playerOne.draw(window);
 
+    ui.renderGemCounter(window, playerOne.getGemCount(), playerTwo.getGemCount());
+
+    if (gameState == GameState::Win)
+    {
+        ui.renderWinScreen(window, playerOne.getGemCount(), playerTwo.getGemCount());
+    }
+
     window.display();
+}
+
+bool Game::allGemsCollected()
+{
+    for (auto &g : gems)
+        if (!g.isCollected())
+            return false;
+    return true;
 }
 
 void Game::updatePlayer(Player &player, const InputHandler &inputHandler, float dt)
@@ -206,7 +264,6 @@ void Game::loadMap(const std::string &name)
     if (rows.empty())
         return;
 
-    const float mapWidth = rows[0].size() * tile;
     const float yOffset = 0.f;
 
     for (std::size_t row = 0; row < rows.size(); ++row)
@@ -245,10 +302,17 @@ void Game::loadMap(const std::string &name)
                 break;
             case 'R':
                 gems.emplace_back(x, y, tile, tile, GemType::redGem);
-                break; 
+                break;
             case 'B':
                 gems.emplace_back(x, y, tile, tile, GemType::blueGem);
                 break;
+            case 'D':
+                doors.emplace_back(x, y, tile, tile, DoorType::playerOneDoor);
+                break;
+            case 'd':
+                doors.emplace_back(x, y, tile, tile, DoorType::playerTwoDoor);
+                break;
+
             case '.':
             case '8':
                 break;

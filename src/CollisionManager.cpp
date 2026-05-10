@@ -44,7 +44,6 @@ void CollisionManager::resolveCollision(Player& player, const sf::FloatRect& pla
     }
     else if (minOverlap == overlapTop)
     {   
-        float playerBottomBefore = player.getBounds().top + player.getBounds().height - player.getVelocityY();
 
         if (player.getVelocityY() >= 0.f)
         {
@@ -71,4 +70,9 @@ bool CollisionManager::checkHazardCollision(Player& player, Hazard& hazard){
 bool CollisionManager::checkGemCollision(Player& player, Gem& gem){
     
     return player.getBounds().intersects(gem.getBounds());
+}
+
+bool CollisionManager::checkDoorCollision(Player& player, Door& door){
+    
+    return player.getBounds().intersects(door.getBounds());
 }

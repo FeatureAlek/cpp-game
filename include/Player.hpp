@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include "Hazard.hpp"
 #include "Gem.hpp"
+#include "Door.hpp"
 
 class Player
 {
@@ -20,7 +21,12 @@ public:
     void addAllowed(GemType type);
     void addGem();
     int getGemCount() const;
+    void resetGemCount();
 
+    // for doors
+    bool canTouch(DoorType) const;
+    void addAllowed(DoorType type);
+    
     // movement
     void moveLeft(float dt);
     void moveRight(float dt);
@@ -77,5 +83,6 @@ private:
 
     std::unordered_set<HazardType> allowedHazards;
     std::unordered_set<GemType> allowedGems;
+    std::unordered_set<DoorType> allowedDoors;
 
 };

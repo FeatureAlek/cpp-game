@@ -3,18 +3,18 @@
 
 namespace
 {
-constexpr int kSpriteFrameSize = 32;
-constexpr int kAnimationFrameCount = 4;
-constexpr int kAnimationFrames[kAnimationFrameCount] = {0, 1, 2, 1};
-constexpr int kIdleFrame = 2;
-constexpr float kAnimationStepSeconds = 0.12f;
-constexpr float kDefaultHitboxSize = 50.f;
-constexpr float kSpriteHitboxWidthScale = 0.6f;
-constexpr float kSpriteHitboxHeightScale = 0.9f;
-constexpr float kSpriteVisualScale = 1.30f;
+    constexpr int kSpriteFrameSize = 32;
+    constexpr int kAnimationFrameCount = 4;
+    constexpr int kAnimationFrames[kAnimationFrameCount] = {0, 1, 2, 1};
+    constexpr int kIdleFrame = 2;
+    constexpr float kAnimationStepSeconds = 0.12f;
+    constexpr float kDefaultHitboxSize = 50.f;
+    constexpr float kSpriteHitboxWidthScale = 0.6f;
+    constexpr float kSpriteHitboxHeightScale = 0.9f;
+    constexpr float kSpriteVisualScale = 1.30f;
 }
 
-Player::Player(float x, float y, sf::Color color, const std::string& spriteFile)
+Player::Player(float x, float y, sf::Color color, const std::string &spriteFile)
 {
     float hitboxWidth = kDefaultHitboxSize;
     float hitboxHeight = kDefaultHitboxSize;
@@ -26,7 +26,7 @@ Player::Player(float x, float y, sf::Color color, const std::string& spriteFile)
 
     shape.setSize(sf::Vector2f(hitboxWidth, hitboxHeight));
     shape.setFillColor(color);
-    shape.setPosition(x,y);
+    shape.setPosition(x, y);
 
     // save spawn position
     spawnX = x;
@@ -51,7 +51,7 @@ void Player::moveRight(float dt)
     syncVisualPosition();
 }
 
-void Player::draw(sf::RenderWindow& window)
+void Player::draw(sf::RenderWindow &window)
 {
     if (hasSprite)
         window.draw(sprite);
@@ -97,7 +97,7 @@ void Player::applyGravity(float dt)
     syncVisualPosition();
 }
 
-bool Player::isOnGround(const sf::RectangleShape& ground)
+bool Player::isOnGround(const sf::RectangleShape &ground)
 {
     const sf::FloatRect playerBounds = shape.getGlobalBounds();
     const sf::FloatRect groundBounds = ground.getGlobalBounds();
@@ -112,7 +112,7 @@ bool Player::isOnGround(const sf::RectangleShape& ground)
     return overlapsHorizontally && playerBottom >= groundBounds.top;
 }
 
-void Player::stopFalling(const sf::RectangleShape& ground)
+void Player::stopFalling(const sf::RectangleShape &ground)
 {
     velocityY = 0.f;
     onGround = true;
@@ -122,8 +122,10 @@ void Player::stopFalling(const sf::RectangleShape& ground)
     syncVisualPosition();
 }
 
-void Player::jump(){
-    if(onGround){
+void Player::jump()
+{
+    if (onGround)
+    {
         velocityY = -500.0f;
         onGround = false;
     }
@@ -191,13 +193,27 @@ void Player::addAllowed(GemType type)
 
 void Player::addGem() { gemCount++; }
 int Player::getGemCount() const { return gemCount; }
+void Player::resetGemCount() { gemCount = 0; }
 
-void Player::setSpawnPoint(float x, float y){
+// Doors
+bool Player::canTouch(DoorType type) const
+{
+    return allowedDoors.find(type) != allowedDoors.end();
+}
+
+void Player::addAllowed(DoorType type)
+{
+    allowedDoors.insert(type);
+}
+
+void Player::setSpawnPoint(float x, float y)
+{
     spawnX = x;
     spawnY = y;
 }
 
-void Player::respawn(){
+void Player::respawn()
+{
 
     shape.setPosition(spawnX, spawnY);
     velocityX = 0.f;
@@ -237,7 +253,7 @@ void Player::updateTextureRect(int frame)
         sprite.setTextureRect(sf::IntRect(frameX, frameY, kSpriteFrameSize, kSpriteFrameSize));
 }
 
-void Player::createSpriteSheet(const std::string& spriteFile)
+void Player::createSpriteSheet(const std::string &spriteFile)
 {
     const std::string spritePath = std::string(GAME_ASSET_DIR) + "/" + spriteFile;
 
