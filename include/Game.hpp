@@ -12,7 +12,9 @@
 
 enum class GameState
 {
+    MainMenu,
     Playing,
+    Paused,
     Win
 };
 
@@ -21,7 +23,7 @@ class Game
 public:
     Game();
     void run();
-    void respawn();
+    void restart();
     void loadMap(const std::string& filename);
     
     bool allGemsCollected();
@@ -52,5 +54,5 @@ private:
     InputHandler playerTwoInput;
     CollisionManager collision;
 
-    GameState gameState = GameState::Playing;
+    GameState gameState = GameState::MainMenu;
 };

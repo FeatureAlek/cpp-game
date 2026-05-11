@@ -83,24 +83,69 @@ void Game::processEvents()
 
         if (event.type == sf::Event::KeyPressed)
         {
-            if (event.key.code == sf::Keyboard::R && gameState == GameState::Win)
+            if (gameState == GameState::MainMenu)
             {
-                playerOne.resetGemCount();
-                playerTwo.resetGemCount();
-                gameState = GameState::Playing;
-                doorTimer = 0.f;
-                loadMap("map.txt");
+                MenuAction action = ui.handleMainMenu(event.key.code);
+                if (action == MenuAction::Play)
+                {
+                    gameState = GameState::Playing;
+                    ui.resetIndex();
+                }
+                if (action == MenuAction::Exit)
+                    window.close();
+            }
+            else if (gameState == GameState::Paused)
+            {
+                MenuAction action = ui.handlePauseMenu(event.key.code);
+                if (action == MenuAction::Resume)
+                {
+                    gameState = GameState::Playing;
+                    ui.resetIndex();
+                }
+                if (action == MenuAction::Restart)
+                {
+                    restart();
+                    ui.resetIndex();
+                }
+                if (action == MenuAction::Exit)
+                    window.close();
+            }
+            else if (gameState == GameState::Win)
+            {
+                MenuAction action = ui.handleWinScreen(event.key.code);
+                if (action == MenuAction::Restart)
+                {
+                    restart();
+                    ui.resetIndex();
+                }
+                if (action == MenuAction::Exit)
+                    window.close();
+            }
+            else if (gameState == GameState::Playing)
+            {
+                if (event.key.code == sf::Keyboard::Escape)
+                {
+                    gameState = GameState::Paused;
+                    ui.resetIndex();
+                }
             }
         }
     }
 }
 
+void Game::restart()
+{
+    playerOne.resetGemCount();
+    playerTwo.resetGemCount();
+    gameState = GameState::Playing;
+    doorTimer = 0.f;
+    loadMap("map.txt");
+}
+
 void Game::update()
 {
-    if (gameState == GameState::Win)
-    {
-        return; // game end
-    }
+    if (gameState != GameState::Playing)
+        return;
 
     float dt = clock.restart().asSeconds();
     if (dt > 0.05f)
@@ -220,9 +265,11 @@ void Game::render()
     ui.renderGemCounter(window, playerOne.getGemCount(), playerTwo.getGemCount());
 
     if (gameState == GameState::Win)
-    {
         ui.renderWinScreen(window, playerOne.getGemCount(), playerTwo.getGemCount());
-    }
+    if (gameState == GameState::MainMenu)
+        ui.renderMainMenu(window);
+    else if (gameState == GameState::Paused)
+        ui.renderPauseMenu(window);
 
     window.display();
 }
