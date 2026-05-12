@@ -129,12 +129,23 @@ void Game::processEvents()
                     ui.resetIndex();
                 }
             }
+            else if (gameState == GameState::Lose)
+            {
+                MenuAction action = ui.handleLoseScreen(event.key.code);
+                if (action == MenuAction::Restart)
+                {
+                    restart();
+                    ui.resetIndex();
+                }
+                if (action == MenuAction::Exit)
+                    window.close();
+            }
         }
     }
 }
 
 void Game::restart()
-{
+{   
     playerOne.resetGemCount();
     playerTwo.resetGemCount();
     gameState = GameState::Playing;
@@ -165,7 +176,10 @@ void Game::update()
         collision.check(*p, platforms, window);
 
         if (p->getBounds().top > window.getSize().y)
-            p->respawn();
+        {
+            gameState = GameState::Lose;
+            return;
+        }
     }
 
     for (auto *p : players)
@@ -175,8 +189,9 @@ void Game::update()
             if (collision.checkHazardCollision(*p, h))
             {
                 if (h.getType() == HazardType::generalRiver || !p->canTouch(h.getType()))
-                {
-                    p->respawn();
+                {   
+                    gameState = GameState::Lose;
+                    return;
                 }
             }
         }
@@ -262,14 +277,16 @@ void Game::render()
     playerTwo.draw(window);
     playerOne.draw(window);
 
-    ui.renderGemCounter(window, playerOne.getGemCount(), playerTwo.getGemCount());
-
-    if (gameState == GameState::Win)
+    if (gameState == GameState::Playing)
+        ui.renderGemCounter(window, playerOne.getGemCount(), playerTwo.getGemCount());
+    else if (gameState == GameState::Win)
         ui.renderWinScreen(window, playerOne.getGemCount(), playerTwo.getGemCount());
-    if (gameState == GameState::MainMenu)
+    else if (gameState == GameState::MainMenu)
         ui.renderMainMenu(window);
     else if (gameState == GameState::Paused)
         ui.renderPauseMenu(window);
+    else if (gameState == GameState::Lose)
+        ui.renderLoseScreen(window);
 
     window.display();
 }
@@ -296,6 +313,8 @@ void Game::loadMap(const std::string &name)
 {
     platforms.clear();
     hazards.clear();
+    doors.clear();
+    gems.clear();
 
     std::ifstream in(std::string(GAME_ASSET_DIR) + "/" + name);
     if (!in)

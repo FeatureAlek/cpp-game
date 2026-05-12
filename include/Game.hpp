@@ -15,7 +15,8 @@ enum class GameState
     MainMenu,
     Playing,
     Paused,
-    Win
+    Win,
+    Lose
 };
 
 class Game 

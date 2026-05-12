@@ -18,10 +18,13 @@ public:
     void renderPauseMenu(sf::RenderWindow &window);
     void renderWinScreen(sf::RenderWindow &window, int p1Gems, int p2Gems);
     void renderGemCounter(sf::RenderWindow &window, int p1Gems, int p2Gems);
+    void renderLoseScreen(sf::RenderWindow& window);
 
     MenuAction handleMainMenu(sf::Keyboard::Key key);
     MenuAction handlePauseMenu(sf::Keyboard::Key key);
     MenuAction handleWinScreen(sf::Keyboard::Key key);
+    MenuAction handleLoseScreen(sf::Keyboard::Key key);
+
 
     void resetIndex();
 

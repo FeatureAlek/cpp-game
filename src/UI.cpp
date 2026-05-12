@@ -80,6 +80,11 @@ void UI::renderGemCounter(sf::RenderWindow& window, int p1Gems, int p2Gems)
     window.draw(text);
 }
 
+void UI::renderLoseScreen(sf::RenderWindow& window)
+{
+    renderMenu(window, "You Lose!", {"Restart", "Exit"});
+}
+
 MenuAction UI::handleMainMenu(sf::Keyboard::Key key)
 {
     if (key == sf::Keyboard::Up)
@@ -110,6 +115,20 @@ MenuAction UI::handlePauseMenu(sf::Keyboard::Key key)
 }
 
 MenuAction UI::handleWinScreen(sf::Keyboard::Key key)
+{
+    if (key == sf::Keyboard::Up)
+        selectedIndex = (selectedIndex - 1 + 2) % 2;
+    if (key == sf::Keyboard::Down)
+        selectedIndex = (selectedIndex + 1) % 2;
+    if (key == sf::Keyboard::Return)
+    {
+        if (selectedIndex == 0) return MenuAction::Restart;
+        if (selectedIndex == 1) return MenuAction::Exit;
+    }
+    return MenuAction::None;
+}
+
+MenuAction UI::handleLoseScreen(sf::Keyboard::Key key)
 {
     if (key == sf::Keyboard::Up)
         selectedIndex = (selectedIndex - 1 + 2) % 2;
