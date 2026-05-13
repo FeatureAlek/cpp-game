@@ -10,7 +10,7 @@ sf::Texture* getTileTexture()
 
     if (!attemptedLoad)
     {
-        texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/tile.png");
+        texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/textures/tile.png");
         texture.setRepeated(true);
         attemptedLoad = true;
     }
@@ -28,7 +28,7 @@ sf::Texture* getPlatformTexture()
 
     if (!attemptedLoad)
     {
-        texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/platform.png");
+        texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/textures/platform.png");
         texture.setRepeated(true);
         attemptedLoad = true;
     }

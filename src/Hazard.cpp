@@ -10,7 +10,7 @@ namespace
 
         if (!attemptedLoad)
         {
-            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/orangeriver.jpg");
+            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/textures/orangeriver.jpg");
             texture.setRepeated(true);
             attemptedLoad = true;
         }
@@ -28,7 +28,7 @@ namespace
 
         if (!attemptedLoad)
         {
-            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/blueriver.jpg");
+            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/textures/blueriver.jpg");
             texture.setRepeated(true);
             attemptedLoad = true;
         }
@@ -46,7 +46,7 @@ namespace
 
         if (!attemptedLoad)
         {
-            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/neutralriver.png");
+            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/textures/neutralriver.png");
             texture.setRepeated(true);
             attemptedLoad = true;
         }

@@ -13,7 +13,7 @@ namespace
 
         if (!attemptedLoad)
         {
-            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/tile.png");
+            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/textures/tile.png");
             texture.setRepeated(true);
             attemptedLoad = true;
         }
@@ -27,8 +27,8 @@ namespace
 
 Game::Game()
     : window(sf::VideoMode(768, 576), "2D Game", sf::Style::Titlebar | sf::Style::Close),
-      playerOne(120.f, 500.f, sf::Color::Red, "warmsprite.png"),
-      playerTwo(520.f, 500.f, sf::Color::Blue, "coldsprite.png"),
+      playerOne(120.f, 500.f, sf::Color::Red, "textures/warmsprite.png"),
+      playerTwo(520.f, 500.f, sf::Color::Blue, "textures/coldsprite.png"),
       playerOneInput(sf::Keyboard::A, sf::Keyboard::D, sf::Keyboard::W),
       playerTwoInput(sf::Keyboard::Left, sf::Keyboard::Right, sf::Keyboard::Up)
 {
@@ -89,6 +89,8 @@ void Game::processEvents()
                 if (action == MenuAction::Play)
                 {
                     gameState = GameState::Playing;
+                    sounds.stopMusic();
+                    sounds.playGameMusic();
                     ui.resetIndex();
                 }
                 if (action == MenuAction::Exit)
@@ -103,8 +105,10 @@ void Game::processEvents()
                     ui.resetIndex();
                 }
                 if (action == MenuAction::Restart)
-                {
+                {   
+                    sounds.stopAllSounds();
                     restart();
+                    sounds.playGameMusic();
                     ui.resetIndex();
                 }
                 if (action == MenuAction::Exit)
@@ -114,8 +118,10 @@ void Game::processEvents()
             {
                 MenuAction action = ui.handleWinScreen(event.key.code);
                 if (action == MenuAction::Restart)
-                {
+                {   
+                    sounds.stopAllSounds();
                     restart();
+                    sounds.playGameMusic();
                     ui.resetIndex();
                 }
                 if (action == MenuAction::Exit)
@@ -134,7 +140,9 @@ void Game::processEvents()
                 MenuAction action = ui.handleLoseScreen(event.key.code);
                 if (action == MenuAction::Restart)
                 {
+                    sounds.stopAllSounds();
                     restart();
+                    sounds.playGameMusic();
                     ui.resetIndex();
                 }
                 if (action == MenuAction::Exit)
@@ -145,7 +153,7 @@ void Game::processEvents()
 }
 
 void Game::restart()
-{   
+{
     playerOne.resetGemCount();
     playerTwo.resetGemCount();
     gameState = GameState::Playing;
@@ -178,6 +186,8 @@ void Game::update()
         if (p->getBounds().top > window.getSize().y)
         {
             gameState = GameState::Lose;
+            sounds.stopMusic();
+            sounds.playDeathMusic();
             return;
         }
     }
@@ -189,8 +199,10 @@ void Game::update()
             if (collision.checkHazardCollision(*p, h))
             {
                 if (h.getType() == HazardType::generalRiver || !p->canTouch(h.getType()))
-                {   
+                {
                     gameState = GameState::Lose;
+                    sounds.stopMusic();
+                    sounds.playDeathMusic();
                     return;
                 }
             }
@@ -207,6 +219,7 @@ void Game::update()
                 {
                     g.collect();
                     p->addGem();
+                    sounds.playGemCollect();
                 }
             }
         }
@@ -236,7 +249,12 @@ void Game::update()
     {
         doorTimer += dt;
         if (doorTimer >= 2.f)
+        {
             gameState = GameState::Win;
+            sounds.stopMusic();
+            sounds.playWin();
+
+        }
     }
     else
     {

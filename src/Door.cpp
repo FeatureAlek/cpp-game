@@ -10,7 +10,7 @@ namespace
 
         if (!attemptedLoad)
         {
-            texture.loadFromFile(std::string(GAME_ASSET_DIR) + ""); // bus pakeista
+            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/textures/"); // bus pakeista
             texture.setRepeated(true);
             attemptedLoad = true;
         }
@@ -28,7 +28,7 @@ namespace
 
         if (!attemptedLoad)
         {
-            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/"); // bus pakeista
+            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/textures/"); // bus pakeista
             texture.setRepeated(true);
             attemptedLoad = true;
         }

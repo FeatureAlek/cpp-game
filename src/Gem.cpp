@@ -10,7 +10,7 @@ namespace
 
         if (!attemptedLoad)
         {
-            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/firegem.png");
+            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/textures/firegem.png");
             texture.setRepeated(true);
             attemptedLoad = true;
         }
@@ -28,7 +28,7 @@ namespace
 
         if (!attemptedLoad)
         {
-            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/bluegem.png");
+            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/textures/bluegem.png");
             texture.setRepeated(true);
             attemptedLoad = true;
         }

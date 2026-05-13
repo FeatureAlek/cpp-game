@@ -9,6 +9,7 @@
 #include "Gem.hpp"
 #include "Door.hpp"
 #include "UI.hpp"
+#include "SoundManager.hpp"
 
 enum class GameState
 {
@@ -56,4 +57,6 @@ private:
     CollisionManager collision;
 
     GameState gameState = GameState::MainMenu;
+
+    SoundManager sounds;
 };
