@@ -1,22 +1,19 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "GameObject.hpp"
 
 enum class HazardType
 {
     playerOneRiver,
     playerTwoRiver,
-    generalRiver 
+    generalRiver
 };
 
-class Hazard
+class Hazard : public GameObject
 {
 public:
     Hazard(float x, float y, float width, float height, HazardType type);
-    void draw(sf::RenderWindow& window);
-    sf::FloatRect getBounds();
     HazardType getType();
 
 private:
-    sf::RectangleShape hazard;
     HazardType type;
 };

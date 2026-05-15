@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "GameObject.hpp"
 
 enum class PlatformType
 {
@@ -7,24 +7,19 @@ enum class PlatformType
     notMoving
 };
 
-class Platform
+class Platform : public GameObject
 {
 public:
-    Platform(float x, float y, float width, float height, PlatformType);
-    
-    sf::FloatRect getBounds();
-    PlatformType getType();
-    
-    void draw(sf::RenderWindow& window);
+    Platform(float x, float y, float width, float height, PlatformType type);
+
     void update(float dt);
+    PlatformType getType();
 
 private:
     float speed = 60.f;
-
     float startY = 0.f;
     float moveRange = 50.f;
     int direction = 1;
 
-    sf::RectangleShape platform;
     PlatformType type;
 };

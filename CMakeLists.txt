@@ -28,7 +28,7 @@ endif()
 if(TARGET SFML::Graphics)
     target_link_libraries(game PRIVATE SFML::Graphics SFML::Window SFML::System)
 else()
-    target_link_libraries(game PRIVATE sfml-graphics sfml-window sfml-system)
+    target_link_libraries(game PRIVATE sfml-graphics sfml-window sfml-system sfml-audio)
 endif()
 
 add_custom_target(run
