@@ -1,29 +1,5 @@
 #include "Game.hpp"
-#include "Platform.hpp"
 #include <fstream>
-// for debugging
-#include <iostream>
-
-namespace
-{
-    sf::Texture *getTileTexture()
-    {
-        static sf::Texture texture;
-        static bool attemptedLoad = false;
-
-        if (!attemptedLoad)
-        {
-            texture.loadFromFile(std::string(GAME_ASSET_DIR) + "/textures/tile.png");
-            texture.setRepeated(true);
-            attemptedLoad = true;
-        }
-
-        if (texture.getSize().x == 0 || texture.getSize().y == 0)
-            return nullptr;
-
-        return &texture;
-    }
-}
 
 Game::Game()
     : window(sf::VideoMode(768, 576), "2D Game", sf::Style::Titlebar | sf::Style::Close),
@@ -35,7 +11,8 @@ Game::Game()
     window.setFramerateLimit(60); // 60 FPS
 
     ground.setSize(sf::Vector2f(0.f, 0.f));
-    if (sf::Texture *texture = getTileTexture())
+    sf::Texture *texture = TextureManager::getInstance().get("tile.png");
+    if (texture)
     {
         ground.setTexture(texture);
         ground.setTextureRect(sf::IntRect(0, 0, 768, 50));
@@ -105,7 +82,7 @@ void Game::processEvents()
                     ui.resetIndex();
                 }
                 if (action == MenuAction::Restart)
-                {   
+                {
                     sounds.stopAllSounds();
                     restart();
                     sounds.playGameMusic();
@@ -118,7 +95,7 @@ void Game::processEvents()
             {
                 MenuAction action = ui.handleWinScreen(event.key.code);
                 if (action == MenuAction::Restart)
-                {   
+                {
                     sounds.stopAllSounds();
                     restart();
                     sounds.playGameMusic();
@@ -253,7 +230,6 @@ void Game::update()
             gameState = GameState::Win;
             sounds.stopMusic();
             sounds.playWin();
-
         }
     }
     else

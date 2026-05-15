@@ -5,11 +5,13 @@
 #include "Player.hpp"
 #include "InputHandler.hpp"
 #include "CollisionManager.hpp"
+#include "Platform.hpp"
 #include "Hazard.hpp"
 #include "Gem.hpp"
 #include "Door.hpp"
 #include "UI.hpp"
 #include "SoundManager.hpp"
+#include "TextureManager.hpp"
 
 enum class GameState
 {

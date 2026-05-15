@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "GameObject.hpp"
 
 enum class GemType
 {
@@ -7,19 +7,16 @@ enum class GemType
     blueGem
 };
 
-class Gem
+class Gem : public GameObject
 {
 public:
-    Gem(float x, float y, float width, float height, GemType);
-    void draw(sf::RenderWindow& window);
-    sf::FloatRect getBounds();
+    Gem(float x, float y, float width, float height, GemType type);
+
     GemType getType();
-    
     bool isCollected() const;
     void collect();
 
 private:
-    sf::RectangleShape gem;
     GemType type;
     bool collected = false;
 };
