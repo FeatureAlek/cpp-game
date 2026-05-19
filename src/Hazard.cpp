@@ -7,9 +7,9 @@ Hazard::Hazard(float x, float y, float width, float height, HazardType type)
     shape.setPosition(x, y);
 
     if (type == HazardType::playerOneRiver)
-        applyTexture("orangeriver.jpg");
+        applyTexture("orangeriver.png");
     else if (type == HazardType::playerTwoRiver)
-        applyTexture("blueriver.jpg");
+        applyTexture("blueriver.png");
     else
         applyTexture("neutralriver.png");
 }

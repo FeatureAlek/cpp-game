@@ -37,6 +37,7 @@ private:
     void update();
     void render();
     void updatePlayer(Player& player, const InputHandler& inputHandler, float dt);
+    void setupBackground();
 
     UI ui;
 
@@ -44,7 +45,7 @@ private:
 
     sf::Clock clock;
     sf::RenderWindow window;
-    sf::RectangleShape ground;
+    sf::RectangleShape background;
     
     std::vector<Hazard> hazards;
     std::vector<Platform> platforms;

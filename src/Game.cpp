@@ -1,8 +1,15 @@
 #include "Game.hpp"
 #include <fstream>
 
+namespace
+{
+constexpr unsigned kWindowWidth = 768;
+constexpr unsigned kWindowHeight = 576;
+constexpr char kBackgroundTexture[] = "cobblestone_bg.png";
+}
+
 Game::Game()
-    : window(sf::VideoMode(768, 576), "2D Game", sf::Style::Titlebar | sf::Style::Close),
+    : window(sf::VideoMode(kWindowWidth, kWindowHeight), "2D Game", sf::Style::Titlebar | sf::Style::Close),
       playerOne(120.f, 500.f, sf::Color::Red, "textures/warmsprite.png"),
       playerTwo(520.f, 500.f, sf::Color::Blue, "textures/coldsprite.png"),
       playerOneInput(sf::Keyboard::A, sf::Keyboard::D, sf::Keyboard::W),
@@ -10,14 +17,7 @@ Game::Game()
 {
     window.setFramerateLimit(60); // 60 FPS
 
-    ground.setSize(sf::Vector2f(0.f, 0.f));
-    sf::Texture *texture = TextureManager::getInstance().get("tile.png");
-    if (texture)
-    {
-        ground.setTexture(texture);
-        ground.setTextureRect(sf::IntRect(0, 0, 768, 50));
-        ground.setFillColor(sf::Color::White);
-    }
+    setupBackground();
 
     // Player1 Player2 added into vector
     players.push_back(&playerOne);
@@ -36,6 +36,27 @@ Game::Game()
     playerTwo.addAllowed(DoorType::playerTwoDoor);
 
     loadMap("map.txt");
+}
+
+void Game::setupBackground()
+{
+    background.setPosition(0.f, 0.f);
+    background.setSize(sf::Vector2f(
+        static_cast<float>(window.getSize().x),
+        static_cast<float>(window.getSize().y)));
+    background.setFillColor(sf::Color(45, 45, 45));
+
+    sf::Texture* texture = TextureManager::getInstance().get(kBackgroundTexture);
+    if (texture)
+    {
+        background.setTexture(texture);
+        background.setTextureRect(sf::IntRect(
+            0,
+            0,
+            static_cast<int>(background.getSize().x),
+            static_cast<int>(background.getSize().y)));
+        background.setFillColor(sf::Color::White);
+    }
 }
 
 // Game loop
@@ -245,7 +266,7 @@ void Game::render()
 {
     window.clear(sf::Color(50, 50, 50));
 
-    window.draw(ground);
+    window.draw(background);
 
     for (auto &platform : platforms)
     {
