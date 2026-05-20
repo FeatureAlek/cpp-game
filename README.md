@@ -46,7 +46,7 @@ https://github.com/SFML/SFML
 ## P2 – Back-End Development (Week 14)
 - Player movement and collisions
 - Level loading
-- Basic objects (button, door)
+- Basic objects (platform, door)
 - Hazards
 - Simple game state handling
 - Minimal tests for movement, interaction, and level completion
@@ -71,3 +71,35 @@ https://github.com/SFML/SFML
 | P1 | Vision + PoC |
 | P2 | Core gameplay logic |
 | P3 | Visuals + UI |
+
+## Report
+[Report excel file  (click here)](./Ataskaita.xlsx)
+
+---
+
+## Configuration (settings)
+
+Users are free to change Config.hpp and treat it as settings (However we advise against doing so, as the functionality of the game may be harmed).
+
+This includes:
+- changing window width and height
+- changing FPS limit
+- changing player characteristics (speed, gravity, jump)
+- chaging player sprite behaviour
+
+and more. 
+
+## Launching the game
+Building and launching the game requires a build folder, which differs per operational system (and precisely for this reason does not exist on github) as well as to have SFML version 2.6.1 (not sure about later versions) and cmake
+
+### bash
+```bash
+mkdir build && cd build
+cmake ..
+make run
+```
+### cmd
+```cmd
+cd build
+make run
+```
