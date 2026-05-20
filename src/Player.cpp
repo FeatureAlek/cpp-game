@@ -1,27 +1,14 @@
 #include "Player.hpp"
 #include <cmath>
 
-namespace
-{
-    constexpr int kSpriteFrameSize = 32;
-    constexpr int kAnimationFrameCount = 4;
-    constexpr int kAnimationFrames[kAnimationFrameCount] = {0, 1, 2, 1};
-    constexpr int kIdleFrame = 2;
-    constexpr float kAnimationStepSeconds = 0.12f;
-    constexpr float kDefaultHitboxSize = 50.f;
-    constexpr float kSpriteHitboxWidthScale = 0.6f;
-    constexpr float kSpriteHitboxHeightScale = 0.9f;
-    constexpr float kSpriteVisualScale = 1.30f;
-}
-
 Player::Player(float x, float y, sf::Color color, const std::string &spriteFile)
 {
-    float hitboxWidth = kDefaultHitboxSize;
-    float hitboxHeight = kDefaultHitboxSize;
+    float hitboxWidth = Config::PLAYER_HITBOX;
+    float hitboxHeight = Config::PLAYER_HITBOX;
     if (!spriteFile.empty())
     {
-        hitboxWidth *= kSpriteHitboxWidthScale;
-        hitboxHeight *= kSpriteHitboxHeightScale;
+        hitboxWidth *= Config::PLAYER_HITBOX_WIDTH_SCALE;
+        hitboxHeight *= Config::PLAYER_HITBOX_HEIGHT_SCALE;
     }
 
     shape.setSize(sf::Vector2f(hitboxWidth, hitboxHeight));
@@ -71,17 +58,17 @@ void Player::updateAnimation(float dt)
     {
         animationTimer += dt;
 
-        while (animationTimer >= kAnimationStepSeconds)
+        while (animationTimer >= Config::SPRITE_ANIMATION_STEP)
         {
-            animationTimer -= kAnimationStepSeconds;
-            animationIndex = (animationIndex + 1) % kAnimationFrameCount;
+            animationTimer -= Config::SPRITE_ANIMATION_STEP;
+            animationIndex = (animationIndex + 1) % std::size(Config::SPRITE_ANIMATION_FRAMES);
         }
     }
     else
     {
         animationTimer = 0.f;
         animationIndex = 0;
-        updateTextureRect(kIdleFrame);
+        updateTextureRect(Config::SPRITE_IDLE_FRAME);
     }
 
     previousX = currentX;
@@ -126,7 +113,7 @@ void Player::jump()
 {
     if (onGround)
     {
-        velocityY = -500.0f;
+        velocityY = Config::PLAYER_JUMP;
         onGround = false;
     }
 }
@@ -221,7 +208,7 @@ void Player::respawn()
     animationTimer = 0.f;
     animationIndex = 0;
     previousX = spawnX;
-    updateTextureRect(kIdleFrame);
+    updateTextureRect(Config::SPRITE_IDLE_FRAME);
     syncVisualPosition();
 }
 
@@ -230,8 +217,8 @@ void Player::syncVisualPosition()
     if (!hasSprite)
         return;
 
-    const float visualWidth = kSpriteFrameSize * std::fabs(sprite.getScale().x);
-    const float visualHeight = kSpriteFrameSize * std::fabs(sprite.getScale().y);
+    const float visualWidth = Config::SPRITE_FRAME_SIZE * std::fabs(sprite.getScale().x);
+    const float visualHeight = Config::SPRITE_FRAME_SIZE * std::fabs(sprite.getScale().y);
     const float offsetX = (shape.getSize().x - visualWidth) * 0.5f;
     const float offsetY = shape.getSize().y - visualHeight;
 
@@ -243,14 +230,14 @@ void Player::updateTextureRect(int frame)
     if (!hasSprite)
         return;
 
-    const int selectedFrame = (frame >= 0) ? frame : kAnimationFrames[animationIndex];
-    const int frameX = (selectedFrame % 2) * kSpriteFrameSize;
-    const int frameY = (selectedFrame / 2) * kSpriteFrameSize;
+    const int selectedFrame = (frame >= 0) ? frame : Config::SPRITE_ANIMATION_FRAMES[animationIndex];
+    const int frameX = (selectedFrame % 2) * Config::SPRITE_FRAME_SIZE;
+    const int frameY = (selectedFrame / 2) * Config::SPRITE_FRAME_SIZE;
 
     if (facingRight)
-        sprite.setTextureRect(sf::IntRect(frameX + kSpriteFrameSize, frameY, -kSpriteFrameSize, kSpriteFrameSize));
+        sprite.setTextureRect(sf::IntRect(frameX + Config::SPRITE_FRAME_SIZE, frameY, -Config::SPRITE_FRAME_SIZE, Config::SPRITE_FRAME_SIZE));
     else
-        sprite.setTextureRect(sf::IntRect(frameX, frameY, kSpriteFrameSize, kSpriteFrameSize));
+        sprite.setTextureRect(sf::IntRect(frameX, frameY, Config::SPRITE_FRAME_SIZE, Config::SPRITE_FRAME_SIZE));
 }
 
 void Player::createSpriteSheet(const std::string &spriteFile)
@@ -266,9 +253,9 @@ void Player::createSpriteSheet(const std::string &spriteFile)
     hasSprite = true;
     sprite.setTexture(spriteSheet);
     sprite.setScale(
-        (kDefaultHitboxSize * kSpriteVisualScale) / static_cast<float>(kSpriteFrameSize),
-        (kDefaultHitboxSize * kSpriteVisualScale) / static_cast<float>(kSpriteFrameSize));
+        (Config::PLAYER_HITBOX * Config::SPRITE_VISUAL_SCALE) / static_cast<float>(Config::SPRITE_FRAME_SIZE),
+        (Config::PLAYER_HITBOX * Config::SPRITE_VISUAL_SCALE) / static_cast<float>(Config::SPRITE_FRAME_SIZE));
 
-    updateTextureRect(kIdleFrame);
+    updateTextureRect(Config::SPRITE_IDLE_FRAME);
     syncVisualPosition();
 }

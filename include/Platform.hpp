@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.hpp"
+#include "Config.hpp"
 
 enum class PlatformType
 {
@@ -16,9 +17,9 @@ public:
     PlatformType getType();
 
 private:
-    float speed = 60.f;
+    float speed = Config::PLATFORM_SPEED;
     float startY = 0.f;
-    float moveRange = 50.f;
+    float moveRange = Config::PLATFORM_MOVE_RANGE;
     int direction = 1;
 
     PlatformType type;

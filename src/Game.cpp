@@ -1,21 +1,14 @@
 #include "Game.hpp"
 #include <fstream>
 
-namespace
-{
-constexpr unsigned kWindowWidth = 768;
-constexpr unsigned kWindowHeight = 576;
-constexpr char kBackgroundTexture[] = "cobblestone_bg.png";
-}
-
 Game::Game()
-    : window(sf::VideoMode(kWindowWidth, kWindowHeight), "2D Game", sf::Style::Titlebar | sf::Style::Close),
+    : window(sf::VideoMode(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT), "2D Game", sf::Style::Titlebar | sf::Style::Close),
       playerOne(120.f, 500.f, sf::Color::Red, "textures/warmsprite.png"),
       playerTwo(520.f, 500.f, sf::Color::Blue, "textures/coldsprite.png"),
       playerOneInput(sf::Keyboard::A, sf::Keyboard::D, sf::Keyboard::W),
       playerTwoInput(sf::Keyboard::Left, sf::Keyboard::Right, sf::Keyboard::Up)
 {
-    window.setFramerateLimit(60); // 60 FPS
+    window.setFramerateLimit(Config::FPS_LIMIT); // 60 FPS
 
     setupBackground();
 
@@ -46,7 +39,7 @@ void Game::setupBackground()
         static_cast<float>(window.getSize().y)));
     background.setFillColor(sf::Color(45, 45, 45));
 
-    sf::Texture* texture = TextureManager::getInstance().get(kBackgroundTexture);
+    sf::Texture* texture = TextureManager::getInstance().get(Config::BACKGROUND_TEXTURE);
     if (texture)
     {
         background.setTexture(texture);
@@ -337,7 +330,7 @@ void Game::loadMap(const std::string &name)
 
     std::vector<std::string> rows;
     std::string line;
-    const float tile = 32.f;
+    const float tile = Config::TILE_SIZE;
 
     while (std::getline(in, line))
         rows.push_back(line);

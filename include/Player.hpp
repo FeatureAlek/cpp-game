@@ -5,6 +5,7 @@
 #include "Hazard.hpp"
 #include "Gem.hpp"
 #include "Door.hpp"
+#include "Config.hpp"
 
 class Player
 {
@@ -60,14 +61,14 @@ private:
     // gem counter
     int gemCount = 0;
 
-    float spawnX;
-    float spawnY;
-
-    float speed = 180.f;
+    float spawnX = 0.f;
+    float spawnY = 0.f;
     float velocityY = 0.f;
     float velocityX = 0.f; 
 
-    float gravity = 1500.f; // downward acceleration
+    float speed     = Config::PLAYER_SPEED;
+    float gravity   = Config::PLAYER_GRAVITY;
+
     bool onGround = false;
     bool hasSprite = false;
     bool facingRight = true;
@@ -76,8 +77,7 @@ private:
     float previousX = 0.f;
     std::size_t animationIndex = 0;
 
-    sf::RectangleShape shape;
-    
+    sf::RectangleShape shape; 
     sf::Texture spriteSheet;
     sf::Sprite sprite;
 
