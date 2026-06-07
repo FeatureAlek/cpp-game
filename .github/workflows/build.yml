@@ -1,11 +1,7 @@
 # .github/workflows/build.yml
 name: Build
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: [push, pull_request]
 
 jobs:
   build-linux:
