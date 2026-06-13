@@ -4,6 +4,8 @@ namespace Config
 {
     // Window
     constexpr char BACKGROUND_TEXTURE[] = "cobblestone_bg.png";
+    constexpr char MENU_BACKGROUND_TEXTURE[] = "mainMenu_bg.png";
+
     constexpr unsigned WINDOW_WIDTH = 768;
     constexpr unsigned WINDOW_HEIGHT = 576;
     constexpr unsigned FPS_LIMIT = 60;
@@ -31,4 +33,8 @@ namespace Config
 
     // Tile
     constexpr float TILE_SIZE = 32.f;
+
+    // Levels
+    constexpr int LEVEL_COUNT = 3;
+
 }

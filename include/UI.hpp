@@ -7,7 +7,12 @@ enum class MenuAction
     Play,
     Resume,
     Restart,
-    Exit
+    Exit,
+    LevelSelect,
+    LevelChosen,
+    BackToLevels,
+    Continue,
+    Back
 };
 
 class UI
@@ -18,20 +23,23 @@ public:
     void renderPauseMenu(sf::RenderWindow &window);
     void renderWinScreen(sf::RenderWindow &window, int p1Gems, int p2Gems);
     void renderGemCounter(sf::RenderWindow &window, int p1Gems, int p2Gems);
-    void renderLoseScreen(sf::RenderWindow& window);
+    void renderLoseScreen(sf::RenderWindow &window);
+    void renderLevelSelect(sf::RenderWindow &window, int levelCount);
 
     MenuAction handleMainMenu(sf::Keyboard::Key key);
     MenuAction handlePauseMenu(sf::Keyboard::Key key);
     MenuAction handleWinScreen(sf::Keyboard::Key key);
     MenuAction handleLoseScreen(sf::Keyboard::Key key);
-
+    MenuAction handleLevelSelect(sf::Keyboard::Key key, int levelCount);
 
     void resetIndex();
+    int getSelectedLevel() const { return selectedIndex; }
+
 
 private:
     sf::Font font;
 
-    int selectedIndex = 0;
+    int selectedIndex = 0; // choice
 
     void renderMenu(sf::RenderWindow &window, const std::string &title,
                     const std::vector<std::string> &items);
