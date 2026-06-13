@@ -51,12 +51,12 @@ void UI::renderMainMenu(sf::RenderWindow& window)
 
 void UI::renderPauseMenu(sf::RenderWindow& window)
 {
-    renderMenu(window, "Paused", {"Resume", "Restart", "Exit"});
+    renderMenu(window, "Paused", {"Resume", "Restart", "Back to Levels", "Exit Game"});
 }
 
 void UI::renderWinScreen(sf::RenderWindow& window, int p1Gems, int p2Gems)
 {
-    renderMenu(window, "You Win!", {"Restart", "Exit"});
+    renderMenu(window, "You Win!", {"Continue", "Restart", "Exit"});
 
     sf::Text stats;
     stats.setFont(font);
@@ -82,7 +82,17 @@ void UI::renderGemCounter(sf::RenderWindow& window, int p1Gems, int p2Gems)
 
 void UI::renderLoseScreen(sf::RenderWindow& window)
 {
-    renderMenu(window, "You Lose!", {"Restart", "Exit"});
+    renderMenu(window, "You Lose!", {"Restart", "Back to Levels", "Exit"});
+}
+
+void UI::renderLevelSelect(sf::RenderWindow& window, int levelCount)
+{
+    std::vector<std::string> items;
+    for (int i = 0; i < levelCount; ++i)
+        items.push_back("Level " + std::to_string(i + 1));
+    items.push_back("Back");
+
+    renderMenu(window, "Select Level", items);
 }
 
 MenuAction UI::handleMainMenu(sf::Keyboard::Key key)
@@ -102,14 +112,15 @@ MenuAction UI::handleMainMenu(sf::Keyboard::Key key)
 MenuAction UI::handlePauseMenu(sf::Keyboard::Key key)
 {
     if (key == sf::Keyboard::Up)
-        selectedIndex = (selectedIndex - 1 + 3) % 3;
+        selectedIndex = (selectedIndex - 1 + 4) % 4;
     if (key == sf::Keyboard::Down)
-        selectedIndex = (selectedIndex + 1) % 3;
+        selectedIndex = (selectedIndex + 1) % 4;
     if (key == sf::Keyboard::Return)
     {
         if (selectedIndex == 0) return MenuAction::Resume;
         if (selectedIndex == 1) return MenuAction::Restart;
-        if (selectedIndex == 2) return MenuAction::Exit;
+        if (selectedIndex == 2) return MenuAction::BackToLevels;
+        if (selectedIndex == 3) return MenuAction::Exit;
     }
     return MenuAction::None;
 }
@@ -117,13 +128,14 @@ MenuAction UI::handlePauseMenu(sf::Keyboard::Key key)
 MenuAction UI::handleWinScreen(sf::Keyboard::Key key)
 {
     if (key == sf::Keyboard::Up)
-        selectedIndex = (selectedIndex - 1 + 2) % 2;
+        selectedIndex = (selectedIndex - 1 + 3) % 3;
     if (key == sf::Keyboard::Down)
-        selectedIndex = (selectedIndex + 1) % 2;
+        selectedIndex = (selectedIndex + 1) % 3;
     if (key == sf::Keyboard::Return)
     {
-        if (selectedIndex == 0) return MenuAction::Restart;
-        if (selectedIndex == 1) return MenuAction::Exit;
+        if (selectedIndex == 0) return MenuAction::Continue;
+        if (selectedIndex == 1) return MenuAction::Restart;
+        if (selectedIndex == 2) return MenuAction::Exit;
     }
     return MenuAction::None;
 }
@@ -131,13 +143,30 @@ MenuAction UI::handleWinScreen(sf::Keyboard::Key key)
 MenuAction UI::handleLoseScreen(sf::Keyboard::Key key)
 {
     if (key == sf::Keyboard::Up)
-        selectedIndex = (selectedIndex - 1 + 2) % 2;
+        selectedIndex = (selectedIndex - 1 + 3) % 3;
     if (key == sf::Keyboard::Down)
-        selectedIndex = (selectedIndex + 1) % 2;
+        selectedIndex = (selectedIndex + 1) % 3;
     if (key == sf::Keyboard::Return)
     {
         if (selectedIndex == 0) return MenuAction::Restart;
-        if (selectedIndex == 1) return MenuAction::Exit;
+        if (selectedIndex == 1) return MenuAction::BackToLevels;
+        if (selectedIndex == 2) return MenuAction::Exit;
+    }
+    return MenuAction::None;
+}
+
+MenuAction UI::handleLevelSelect(sf::Keyboard::Key key, int levelCount)
+{
+    int total = levelCount + 1;
+
+    if (key == sf::Keyboard::Up)
+        selectedIndex = (selectedIndex - 1 + total) % total;
+    if (key == sf::Keyboard::Down)
+        selectedIndex = (selectedIndex + 1) % total;
+    if (key == sf::Keyboard::Return)
+    {
+        if (selectedIndex == levelCount) return MenuAction::Back;
+        return MenuAction::LevelChosen; 
     }
     return MenuAction::None;
 }

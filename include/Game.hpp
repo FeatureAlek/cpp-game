@@ -16,6 +16,7 @@
 enum class GameState
 {
     MainMenu,
+    LevelSelect,
     Playing,
     Paused,
     Win,
@@ -29,6 +30,7 @@ public:
     void run();
     void restart();
     void loadMap(const std::string& filename);
+    void loadLevel(int levelIndex);
     
     bool allGemsCollected();
 
@@ -38,6 +40,8 @@ private:
     void render();
     void updatePlayer(Player& player, const InputHandler& inputHandler, float dt);
     void setupBackground();
+
+    int currentLevel = 0;
 
     UI ui;
 

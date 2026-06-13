@@ -39,7 +39,7 @@ void Game::setupBackground()
         static_cast<float>(window.getSize().y)));
     background.setFillColor(sf::Color(45, 45, 45));
 
-    sf::Texture* texture = TextureManager::getInstance().get(Config::BACKGROUND_TEXTURE);
+    sf::Texture *texture = TextureManager::getInstance().get(Config::BACKGROUND_TEXTURE);
     if (texture)
     {
         background.setTexture(texture);
@@ -63,7 +63,6 @@ void Game::run()
     }
 }
 
-// Window close button
 void Game::processEvents()
 {
     sf::Event event;
@@ -79,9 +78,7 @@ void Game::processEvents()
                 MenuAction action = ui.handleMainMenu(event.key.code);
                 if (action == MenuAction::Play)
                 {
-                    gameState = GameState::Playing;
-                    sounds.stopMusic();
-                    sounds.playGameMusic();
+                    gameState = GameState::LevelSelect;
                     ui.resetIndex();
                 }
                 if (action == MenuAction::Exit)
@@ -102,12 +99,26 @@ void Game::processEvents()
                     sounds.playGameMusic();
                     ui.resetIndex();
                 }
+                if (action == MenuAction::BackToLevels)
+                {
+                    sounds.stopAllSounds();
+                    gameState = GameState::LevelSelect;
+                    sounds.playMenuMusic();
+                    ui.resetIndex();
+                }
                 if (action == MenuAction::Exit)
                     window.close();
             }
             else if (gameState == GameState::Win)
             {
                 MenuAction action = ui.handleWinScreen(event.key.code);
+                if (action == MenuAction::Continue)
+                {
+                    sounds.stopAllSounds();
+                    gameState = GameState::LevelSelect;
+                    sounds.playMenuMusic();
+                    ui.resetIndex();
+                }
                 if (action == MenuAction::Restart)
                 {
                     sounds.stopAllSounds();
@@ -136,8 +147,32 @@ void Game::processEvents()
                     sounds.playGameMusic();
                     ui.resetIndex();
                 }
+                if (action == MenuAction::BackToLevels)
+                {
+                    sounds.stopAllSounds();
+                    gameState = GameState::LevelSelect;
+                    sounds.playMenuMusic();
+                    ui.resetIndex();
+                }
                 if (action == MenuAction::Exit)
                     window.close();
+            }
+            else if (gameState == GameState::LevelSelect)
+            {
+                MenuAction action = ui.handleLevelSelect(event.key.code, Config::LEVEL_COUNT);
+                if (action == MenuAction::LevelChosen)
+                {
+                    loadLevel(ui.getSelectedLevel());
+                    gameState = GameState::Playing;
+                    sounds.stopMusic();
+                    sounds.playGameMusic();
+                    ui.resetIndex();
+                }
+                if (action == MenuAction::Back)
+                {   
+                    gameState = GameState::MainMenu;
+                    ui.resetIndex();
+                }
             }
         }
     }
@@ -145,11 +180,8 @@ void Game::processEvents()
 
 void Game::restart()
 {
-    playerOne.resetGemCount();
-    playerTwo.resetGemCount();
     gameState = GameState::Playing;
-    doorTimer = 0.f;
-    loadMap("map.txt");
+    loadLevel(currentLevel);
 }
 
 void Game::update()
@@ -295,6 +327,8 @@ void Game::render()
         ui.renderPauseMenu(window);
     else if (gameState == GameState::Lose)
         ui.renderLoseScreen(window);
+    else if (gameState == GameState::LevelSelect)
+        ui.renderLevelSelect(window, Config::LEVEL_COUNT);
 
     window.display();
 }
@@ -315,6 +349,15 @@ void Game::updatePlayer(Player &player, const InputHandler &inputHandler, float 
         player.moveRight(dt);
     if (inputHandler.isJumpPressed())
         player.jump();
+}
+
+void Game::loadLevel(int levelIndex)
+{
+    currentLevel = levelIndex;
+    playerOne.resetGemCount();
+    playerTwo.resetGemCount();
+    doorTimer = 0.f;
+    loadMap("map" + std::to_string(levelIndex + 1) + ".txt");
 }
 
 void Game::loadMap(const std::string &name)
