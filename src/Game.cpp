@@ -94,109 +94,136 @@ void Game::processEvents()
 
         if (event.type == sf::Event::KeyPressed)
         {
-            if (gameState == GameState::MainMenu)
+            switch (gameState)
             {
-                MenuAction action = ui.handleMainMenu(event.key.code);
-                if (action == MenuAction::Play)
-                {
-                    gameState = GameState::LevelSelect;
-                    ui.resetIndex();
-                }
-                if (action == MenuAction::Exit)
-                    window.close();
-            }
-            else if (gameState == GameState::Paused)
-            {
-                MenuAction action = ui.handlePauseMenu(event.key.code);
-                if (action == MenuAction::Resume)
-                {
-                    gameState = GameState::Playing;
-                    ui.resetIndex();
-                }
-                if (action == MenuAction::Restart)
-                {
-                    sounds.stopAllSounds();
-                    restart();
-                    sounds.playGameMusic();
-                    ui.resetIndex();
-                }
-                if (action == MenuAction::BackToLevels)
-                {
-                    sounds.stopAllSounds();
-                    gameState = GameState::LevelSelect;
-                    sounds.playMenuMusic();
-                    ui.resetIndex();
-                }
-                if (action == MenuAction::Exit)
-                    window.close();
-            }
-            else if (gameState == GameState::Win)
-            {
-                MenuAction action = ui.handleWinScreen(event.key.code);
-                if (action == MenuAction::Continue)
-                {
-                    sounds.stopAllSounds();
-                    gameState = GameState::LevelSelect;
-                    sounds.playMenuMusic();
-                    ui.resetIndex();
-                }
-                if (action == MenuAction::Restart)
-                {
-                    sounds.stopAllSounds();
-                    restart();
-                    sounds.playGameMusic();
-                    ui.resetIndex();
-                }
-                if (action == MenuAction::Exit)
-                    window.close();
-            }
-            else if (gameState == GameState::Playing)
-            {
-                if (event.key.code == sf::Keyboard::Escape)
-                {
-                    gameState = GameState::Paused;
-                    ui.resetIndex();
-                }
-            }
-            else if (gameState == GameState::Lose)
-            {
-                MenuAction action = ui.handleLoseScreen(event.key.code);
-                if (action == MenuAction::Restart)
-                {
-                    sounds.stopAllSounds();
-                    restart();
-                    sounds.playGameMusic();
-                    ui.resetIndex();
-                }
-                if (action == MenuAction::BackToLevels)
-                {
-                    sounds.stopAllSounds();
-                    gameState = GameState::LevelSelect;
-                    sounds.playMenuMusic();
-                    ui.resetIndex();
-                }
-                if (action == MenuAction::Exit)
-                    window.close();
-            }
-            else if (gameState == GameState::LevelSelect)
-            {
-                MenuAction action = ui.handleLevelSelect(event.key.code, Config::LEVEL_COUNT);
-                if (action == MenuAction::LevelChosen)
-                {
-                    loadLevel(ui.getSelectedLevel());
-                    gameState = GameState::Playing;
-                    sounds.stopMusic();
-                    sounds.playGameMusic();
-                    ui.resetIndex();
-                }
-                if (action == MenuAction::Back)
-                {
-                    gameState = GameState::MainMenu;
-                    ui.resetIndex();
-                }
+            case GameState::MainMenu:
+                handleMainMenuInput(event.key.code);
+                break;
+            case GameState::LevelSelect:
+                handleLevelSelectInput(event.key.code);
+                break;
+            case GameState::Playing:
+                handlePlayingInput(event.key.code);
+                break;
+            case GameState::Paused:
+                handlePausedInput(event.key.code);
+                break;
+            case GameState::Win:
+                handleWinInput(event.key.code);
+                break;
+            case GameState::Lose:
+                handleLoseInput(event.key.code);
+                break;
             }
         }
     }
+}
+
+void Game::handleMainMenuInput(sf::Keyboard::Key key)
+{
+    MenuAction action = ui.handleMainMenu(key);
+    if (action == MenuAction::Play)
+    {
+        gameState = GameState::LevelSelect;
+        ui.resetIndex();
+    }
+    if (action == MenuAction::Exit)
+        window.close();
+}
+
+void Game::handleLevelSelectInput(sf::Keyboard::Key key)
+{
+    MenuAction action = ui.handleLevelSelect(key, Config::LEVEL_COUNT);
+    if (action == MenuAction::LevelChosen)
+    {
+        loadLevel(ui.getSelectedLevel());
+        gameState = GameState::Playing;
+        sounds.stopAllSounds();
+        sounds.playGameMusic();
+        ui.resetIndex();
+    }
+    if (action == MenuAction::Back)
+    {
+        gameState = GameState::MainMenu;
+        ui.resetIndex();
+    }
+}
+
+void Game::handlePlayingInput(sf::Keyboard::Key key)
+{
+    if (key == sf::Keyboard::Escape)
+    {
+        gameState = GameState::Paused;
+        ui.resetIndex();
+    }
+}
+
+void Game::handlePausedInput(sf::Keyboard::Key key)
+{
+    MenuAction action = ui.handlePauseMenu(key);
+    if (action == MenuAction::Resume)
+    {
+        gameState = GameState::Playing;
+        ui.resetIndex();
+    }
+    if (action == MenuAction::Restart)
+    {
+        sounds.stopAllSounds();
+        restart();
+        sounds.playGameMusic();
+        ui.resetIndex();
+    }
+    if (action == MenuAction::BackToLevels)
+    {
+        sounds.stopAllSounds();
+        gameState = GameState::LevelSelect;
+        sounds.playMenuMusic();
+        ui.resetIndex();
+    }
+    if (action == MenuAction::Exit)
+        window.close();
+}
+
+void Game::handleWinInput(sf::Keyboard::Key key)
+{
+    MenuAction action = ui.handleWinScreen(key);
+    if (action == MenuAction::Continue)
+    {
+        sounds.stopAllSounds();
+        gameState = GameState::LevelSelect;
+        sounds.playMenuMusic();
+        ui.resetIndex();
+    }
+    if (action == MenuAction::Restart)
+    {
+        sounds.stopAllSounds();
+        restart();
+        sounds.playGameMusic();
+        ui.resetIndex();
+    }
+    if (action == MenuAction::Exit)
+        window.close();
+}
+
+void Game::handleLoseInput(sf::Keyboard::Key key)
+{
+    MenuAction action = ui.handleLoseScreen(key);
+    if (action == MenuAction::Restart)
+    {
+        sounds.stopAllSounds();
+        restart();
+        sounds.playGameMusic();
+        ui.resetIndex();
+    }
+    if (action == MenuAction::BackToLevels)
+    {
+        sounds.stopAllSounds();
+        gameState = GameState::LevelSelect;
+        sounds.playMenuMusic();
+        ui.resetIndex();
+    }
+    if (action == MenuAction::Exit)
+        window.close();
 }
 
 void Game::restart()
@@ -211,14 +238,30 @@ void Game::update()
         return;
 
     float dt = clock.restart().asSeconds();
-    if (dt > 0.05f)
-        dt = 0.05f;
+    if (dt > Config::MAX_DT)
+        dt = Config::MAX_DT;
 
+    updatePlatforms(dt);
+    updatePlayers(dt);
+
+    if (updateHazards())
+        return;
+
+    updateGems();
+    updateDoors(dt);
+
+    for (auto *p : players)
+        p->updateAnimation(dt);
+}
+
+void Game::updatePlatforms(float dt)
+{
     for (auto &platform : platforms)
-    {
         platform.update(dt);
-    }
+}
 
+void Game::updatePlayers(float dt)
+{
     updatePlayer(playerOne, playerOneInput, dt);
     updatePlayer(playerTwo, playerTwoInput, dt);
 
@@ -226,18 +269,21 @@ void Game::update()
     {
         p->applyGravity(dt);
         collision.check(*p, platforms, window);
+    }
+}
 
+bool Game::updateHazards()
+{
+    for (auto *p : players)
+    {
         if (p->getBounds().top > window.getSize().y)
         {
             gameState = GameState::Lose;
             sounds.stopMusic();
             sounds.playDeathMusic();
-            return;
+            return true;
         }
-    }
 
-    for (auto *p : players)
-    {
         for (auto &h : hazards)
         {
             if (collision.checkHazardCollision(*p, h))
@@ -247,12 +293,16 @@ void Game::update()
                     gameState = GameState::Lose;
                     sounds.stopMusic();
                     sounds.playDeathMusic();
-                    return;
+                    return true;
                 }
             }
         }
     }
+    return false;
+}
 
+void Game::updateGems()
+{
     for (auto *p : players)
     {
         for (auto &g : gems)
@@ -268,7 +318,10 @@ void Game::update()
             }
         }
     }
+}
 
+void Game::updateDoors(float dt)
+{
     bool p1AtDoor = false;
     bool p2AtDoor = false;
 
@@ -289,10 +342,11 @@ void Game::update()
             }
         }
     }
+
     if (p1AtDoor && p2AtDoor)
     {
         doorTimer += dt;
-        if (doorTimer >= 2.f)
+        if (doorTimer >= Config::DOOR_TIMER)
         {
             gameState = GameState::Win;
             sounds.stopMusic();
@@ -303,9 +357,6 @@ void Game::update()
     {
         doorTimer = 0.f;
     }
-
-    for (auto *p : players)
-        p->updateAnimation(dt);
 }
 
 void Game::render()

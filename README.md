@@ -1,7 +1,7 @@
 # Project Plan – "Fireboy and Watergirl inspired game"
 
 ### Short Description
-Single-level (for now) 2D cooperative puzzle-platformer where two characters with different elemental traits must reach the exit by solving simple puzzles by interacting with the environment.
+2D cooperative puzzle-platformer where two characters with different elemental traits must reach the exit by solving simple puzzles by interacting with the environment.
 
 ### Used infrastructure
 - CMake for building

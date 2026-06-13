@@ -35,7 +35,22 @@ public:
     bool allGemsCollected();
 
 private:
+
+    // handlers, process events refactoring
+    void handleMainMenuInput(sf::Keyboard::Key key);
+    void handleLevelSelectInput(sf::Keyboard::Key key);
+    void handlePlayingInput(sf::Keyboard::Key key);
+    void handlePausedInput(sf::Keyboard::Key key);
+    void handleWinInput(sf::Keyboard::Key key);
+    void handleLoseInput(sf::Keyboard::Key key);
     void processEvents();
+
+    void updatePlatforms(float dt);
+    void updatePlayers(float dt);
+    bool updateHazards();      // true if Lose
+    void updateGems();
+    void updateDoors(float dt);
+    
     void update();
     void render();
     void updatePlayer(Player& player, const InputHandler& inputHandler, float dt);
