@@ -39,7 +39,9 @@ private:
     void update();
     void render();
     void updatePlayer(Player& player, const InputHandler& inputHandler, float dt);
+    
     void setupBackground();
+    void setupMenuBackground();
 
     int currentLevel = 0;
 
@@ -50,6 +52,7 @@ private:
     sf::Clock clock;
     sf::RenderWindow window;
     sf::RectangleShape background;
+    sf::RectangleShape menuBackground;
     
     std::vector<Hazard> hazards;
     std::vector<Platform> platforms;

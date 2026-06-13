@@ -11,6 +11,7 @@ Game::Game()
     window.setFramerateLimit(Config::FPS_LIMIT); // 60 FPS
 
     setupBackground();
+    setupMenuBackground();
 
     // Player1 Player2 added into vector
     players.push_back(&playerOne);
@@ -49,6 +50,26 @@ void Game::setupBackground()
             static_cast<int>(background.getSize().x),
             static_cast<int>(background.getSize().y)));
         background.setFillColor(sf::Color::White);
+    }
+}
+
+void Game::setupMenuBackground()
+{
+    menuBackground.setPosition(0.f, 0.f);
+    menuBackground.setSize(sf::Vector2f(
+        static_cast<float>(window.getSize().x),
+        static_cast<float>(window.getSize().y)));
+    menuBackground.setFillColor(sf::Color(45, 45, 45)); // fallback
+
+    sf::Texture *texture = TextureManager::getInstance().get(Config::MENU_BACKGROUND_TEXTURE);
+    if (texture)
+    {
+        menuBackground.setTexture(texture);
+        menuBackground.setTextureRect(sf::IntRect(
+            0, 0,
+            static_cast<int>(menuBackground.getSize().x),
+            static_cast<int>(menuBackground.getSize().y)));
+        menuBackground.setFillColor(sf::Color::White);
     }
 }
 
@@ -169,7 +190,7 @@ void Game::processEvents()
                     ui.resetIndex();
                 }
                 if (action == MenuAction::Back)
-                {   
+                {
                     gameState = GameState::MainMenu;
                     ui.resetIndex();
                 }
@@ -291,42 +312,39 @@ void Game::render()
 {
     window.clear(sf::Color(50, 50, 50));
 
-    window.draw(background);
-
-    for (auto &platform : platforms)
+    if (gameState == GameState::MainMenu || gameState == GameState::LevelSelect)
     {
-        platform.draw(window);
+        window.draw(menuBackground);
+    }
+    else
+    {
+        window.draw(background);
+
+        for (auto &platform : platforms)
+            platform.draw(window);
+        for (auto &h : hazards)
+            h.draw(window);
+        for (auto &g : gems)
+            if (!g.isCollected())
+                g.draw(window);
+        for (auto &d : doors)
+            d.draw(window);
+
+        playerTwo.draw(window);
+        playerOne.draw(window);
+
+        if (gameState == GameState::Playing)
+            ui.renderGemCounter(window, playerOne.getGemCount(), playerTwo.getGemCount());
+        else if (gameState == GameState::Win)
+            ui.renderWinScreen(window, playerOne.getGemCount(), playerTwo.getGemCount());
+        else if (gameState == GameState::Paused)
+            ui.renderPauseMenu(window);
+        else if (gameState == GameState::Lose)
+            ui.renderLoseScreen(window);
     }
 
-    for (auto &h : hazards)
-    {
-        h.draw(window);
-    }
-
-    for (auto &g : gems)
-    {
-        if (!g.isCollected())
-            g.draw(window);
-    }
-
-    for (auto &d : doors)
-    {
-        d.draw(window);
-    }
-
-    playerTwo.draw(window);
-    playerOne.draw(window);
-
-    if (gameState == GameState::Playing)
-        ui.renderGemCounter(window, playerOne.getGemCount(), playerTwo.getGemCount());
-    else if (gameState == GameState::Win)
-        ui.renderWinScreen(window, playerOne.getGemCount(), playerTwo.getGemCount());
-    else if (gameState == GameState::MainMenu)
+    if (gameState == GameState::MainMenu)
         ui.renderMainMenu(window);
-    else if (gameState == GameState::Paused)
-        ui.renderPauseMenu(window);
-    else if (gameState == GameState::Lose)
-        ui.renderLoseScreen(window);
     else if (gameState == GameState::LevelSelect)
         ui.renderLevelSelect(window, Config::LEVEL_COUNT);
 
