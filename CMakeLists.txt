@@ -9,7 +9,7 @@ if(NOT SFML_FOUND)
 endif()
 
 # update if needed
-include_directories(include)
+include_directories(include include/core include/entities include/managers include/ui)
 
 # directory - what files to compile; ./game to run it
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp)

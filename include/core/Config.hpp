@@ -39,6 +39,7 @@ namespace Config
 
     // Delta time
     constexpr float MAX_DT = 0.05f;
+    
     // Time of door opening
     constexpr float DOOR_TIMER = 2.f;
 

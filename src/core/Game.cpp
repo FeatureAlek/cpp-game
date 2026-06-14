@@ -6,12 +6,10 @@ Game::Game()
       playerOne(120.f, 500.f, sf::Color::Red, "textures/warmsprite.png"),
       playerTwo(520.f, 500.f, sf::Color::Blue, "textures/coldsprite.png"),
       playerOneInput(sf::Keyboard::A, sf::Keyboard::D, sf::Keyboard::W),
-      playerTwoInput(sf::Keyboard::Left, sf::Keyboard::Right, sf::Keyboard::Up)
+      playerTwoInput(sf::Keyboard::Left, sf::Keyboard::Right, sf::Keyboard::Up),
+      bgManager(window)
 {
     window.setFramerateLimit(Config::FPS_LIMIT); // 60 FPS
-
-    setupBackground();
-    setupMenuBackground();
 
     // Player1 Player2 added into vector
     players.push_back(&playerOne);
@@ -30,47 +28,6 @@ Game::Game()
     playerTwo.addAllowed(DoorType::playerTwoDoor);
 
     loadMap("map.txt");
-}
-
-void Game::setupBackground()
-{
-    background.setPosition(0.f, 0.f);
-    background.setSize(sf::Vector2f(
-        static_cast<float>(window.getSize().x),
-        static_cast<float>(window.getSize().y)));
-    background.setFillColor(sf::Color(45, 45, 45));
-
-    sf::Texture *texture = TextureManager::getInstance().get(Config::BACKGROUND_TEXTURE);
-    if (texture)
-    {
-        background.setTexture(texture);
-        background.setTextureRect(sf::IntRect(
-            0,
-            0,
-            static_cast<int>(background.getSize().x),
-            static_cast<int>(background.getSize().y)));
-        background.setFillColor(sf::Color::White);
-    }
-}
-
-void Game::setupMenuBackground()
-{
-    menuBackground.setPosition(0.f, 0.f);
-    menuBackground.setSize(sf::Vector2f(
-        static_cast<float>(window.getSize().x),
-        static_cast<float>(window.getSize().y)));
-    menuBackground.setFillColor(sf::Color(45, 45, 45)); // fallback
-
-    sf::Texture *texture = TextureManager::getInstance().get(Config::MENU_BACKGROUND_TEXTURE);
-    if (texture)
-    {
-        menuBackground.setTexture(texture);
-        menuBackground.setTextureRect(sf::IntRect(
-            0, 0,
-            static_cast<int>(menuBackground.getSize().x),
-            static_cast<int>(menuBackground.getSize().y)));
-        menuBackground.setFillColor(sf::Color::White);
-    }
 }
 
 // Game loop
@@ -363,14 +320,10 @@ void Game::render()
 {
     window.clear(sf::Color(50, 50, 50));
 
-    if (gameState == GameState::MainMenu || gameState == GameState::LevelSelect)
-    {
-        window.draw(menuBackground);
-    }
-    else
-    {
-        window.draw(background);
+    bgManager.draw(window, gameState);
 
+    if (gameState != GameState::MainMenu && gameState != GameState::LevelSelect)
+    {
         for (auto &platform : platforms)
             platform.draw(window);
         for (auto &h : hazards)
@@ -386,18 +339,20 @@ void Game::render()
 
         if (gameState == GameState::Playing)
             ui.renderGemCounter(window, playerOne.getGemCount(), playerTwo.getGemCount());
-        else if (gameState == GameState::Win)
-            ui.renderWinScreen(window, playerOne.getGemCount(), playerTwo.getGemCount());
         else if (gameState == GameState::Paused)
             ui.renderPauseMenu(window);
+        else if (gameState == GameState::Win)
+            ui.renderWinScreen(window, playerOne.getGemCount(), playerTwo.getGemCount());
         else if (gameState == GameState::Lose)
             ui.renderLoseScreen(window);
     }
-
-    if (gameState == GameState::MainMenu)
-        ui.renderMainMenu(window);
-    else if (gameState == GameState::LevelSelect)
-        ui.renderLevelSelect(window, Config::LEVEL_COUNT);
+    else
+    {
+        if (gameState == GameState::MainMenu)
+            ui.renderMainMenu(window);
+        else if (gameState == GameState::LevelSelect)
+            ui.renderLevelSelect(window, Config::LEVEL_COUNT);
+    }
 
     window.display();
 }

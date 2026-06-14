@@ -11,32 +11,19 @@
 #include "Door.hpp"
 #include "UI.hpp"
 #include "SoundManager.hpp"
-#include "TextureManager.hpp"
-
-enum class GameState
-{
-    MainMenu,
-    LevelSelect,
-    Playing,
-    Paused,
-    Win,
-    Lose
-};
+#include "BackgroundManager.hpp"
+#include "GameState.hpp"
 
 class Game 
 {
 public:
     Game();
     void run();
-    void restart();
-    void loadMap(const std::string& filename);
     void loadLevel(int levelIndex);
-    
-    bool allGemsCollected();
 
 private:
 
-    // handlers, process events refactoring
+    // handlers
     void handleMainMenuInput(sf::Keyboard::Key key);
     void handleLevelSelectInput(sf::Keyboard::Key key);
     void handlePlayingInput(sf::Keyboard::Key key);
@@ -44,44 +31,46 @@ private:
     void handleWinInput(sf::Keyboard::Key key);
     void handleLoseInput(sf::Keyboard::Key key);
     void processEvents();
-
+    
+    // update
     void updatePlatforms(float dt);
+    void updatePlayer(Player& player, const InputHandler& inputHandler, float dt);
     void updatePlayers(float dt);
-    bool updateHazards();      // true if Lose
+    bool updateHazards();      // true if game state = Lose
     void updateGems();
     void updateDoors(float dt);
-    
     void update();
-    void render();
-    void updatePlayer(Player& player, const InputHandler& inputHandler, float dt);
-    
-    void setupBackground();
-    void setupMenuBackground();
 
+    // other
+    void render();
+    void restart();
+    bool allGemsCollected();
+    void loadMap(const std::string& filename);
+
+    // window & state
+    sf::RenderWindow window;
+    sf::Clock clock;
+    GameState gameState = GameState::MainMenu;
+    float doorTimer = 0.f;
     int currentLevel = 0;
 
-    UI ui;
-
-    float doorTimer = 0.f;
-
-    sf::Clock clock;
-    sf::RenderWindow window;
-    sf::RectangleShape background;
-    sf::RectangleShape menuBackground;
-    
-    std::vector<Hazard> hazards;
-    std::vector<Platform> platforms;
-    std::vector<Gem> gems;
-    std::vector<Door> doors;
-
+    // players
     Player playerOne;
     Player playerTwo;
     std::vector<Player*> players;
     InputHandler playerOneInput;
     InputHandler playerTwoInput;
+
+    // world
+    std::vector<Platform> platforms;
+    std::vector<Hazard> hazards;
+    std::vector<Gem> gems;
+    std::vector<Door> doors;
+
+    // managers
     CollisionManager collision;
-
-    GameState gameState = GameState::MainMenu;
-
     SoundManager sounds;
+    BackgroundManager bgManager;
+    UI ui;
+
 };

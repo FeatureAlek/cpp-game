@@ -21,67 +21,43 @@ Player::Player(float x, float y, sf::Color color, const std::string &spriteFile)
     previousX = x;
 
     if (!spriteFile.empty())
-        createSpriteSheet(spriteFile);
-}
-
-void Player::moveLeft(float dt)
-{
-    facingRight = false;
-    shape.move(-speed * dt, 0.f);
-    syncVisualPosition();
-}
-
-void Player::moveRight(float dt)
-{
-    facingRight = true;
-    shape.move(speed * dt, 0.f);
-    syncVisualPosition();
+        animator.load(spriteFile);
 }
 
 void Player::draw(sf::RenderWindow &window)
 {
-    if (hasSprite)
-        window.draw(sprite);
+    if (animator.isLoaded())
+        animator.draw(window);
     else
         window.draw(shape);
 }
 
+void Player::moveLeft(float dt)
+{
+    animator.setFacingRight(false);
+    shape.move(-speed * dt, 0.f);
+    animator.syncPosition(shape.getPosition(), shape.getSize());
+}
+
+void Player::moveRight(float dt)
+{
+    animator.setFacingRight(true);
+    shape.move(speed * dt, 0.f);
+    animator.syncPosition(shape.getPosition(), shape.getSize());
+}
+
 void Player::updateAnimation(float dt)
 {
-    if (!hasSprite)
-        return;
-
-    const float currentX = shape.getPosition().x;
-    const bool isWalking = std::fabs(currentX - previousX) > 0.01f;
-
-    if (isWalking)
-    {
-        animationTimer += dt;
-
-        while (animationTimer >= Config::SPRITE_ANIMATION_STEP)
-        {
-            animationTimer -= Config::SPRITE_ANIMATION_STEP;
-            animationIndex = (animationIndex + 1) % std::size(Config::SPRITE_ANIMATION_FRAMES);
-        }
-    }
-    else
-    {
-        animationTimer = 0.f;
-        animationIndex = 0;
-        updateTextureRect(Config::SPRITE_IDLE_FRAME);
-    }
-
-    previousX = currentX;
-    if (isWalking)
-        updateTextureRect();
-    syncVisualPosition();
+    animator.update(dt, shape.getPosition().x, previousX);
+    animator.syncPosition(shape.getPosition(), shape.getSize());
+    previousX = shape.getPosition().x;
 }
 
 void Player::applyGravity(float dt)
 {
     velocityY += gravity * dt;
     shape.move(0.f, velocityY * dt);
-    syncVisualPosition();
+    animator.syncPosition(shape.getPosition(), shape.getSize());
 }
 
 bool Player::isOnGround(const sf::RectangleShape &ground)
@@ -106,7 +82,7 @@ void Player::stopFalling(const sf::RectangleShape &ground)
     float groundTop = ground.getPosition().y;
     float playerHeight = shape.getSize().y;
     shape.setPosition(shape.getPosition().x, groundTop - playerHeight);
-    syncVisualPosition();
+    animator.syncPosition(shape.getPosition(), shape.getSize());
 }
 
 void Player::jump()
@@ -132,13 +108,13 @@ float Player::getVelocityY() const
 void Player::setPositionX(float x)
 {
     shape.setPosition(x, shape.getPosition().y);
-    syncVisualPosition();
+    animator.syncPosition(shape.getPosition(), shape.getSize());
 }
 
 void Player::setPositionY(float y)
 {
     shape.setPosition(shape.getPosition().x, y);
-    syncVisualPosition();
+    animator.syncPosition(shape.getPosition(), shape.getSize());
 }
 
 void Player::setVelocityX(float v)
@@ -201,61 +177,10 @@ void Player::setSpawnPoint(float x, float y)
 
 void Player::respawn()
 {
-
     shape.setPosition(spawnX, spawnY);
     velocityX = 0.f;
     velocityY = 0.f;
-    animationTimer = 0.f;
-    animationIndex = 0;
     previousX = spawnX;
-    updateTextureRect(Config::SPRITE_IDLE_FRAME);
-    syncVisualPosition();
-}
-
-void Player::syncVisualPosition()
-{
-    if (!hasSprite)
-        return;
-
-    const float visualWidth = Config::SPRITE_FRAME_SIZE * std::fabs(sprite.getScale().x);
-    const float visualHeight = Config::SPRITE_FRAME_SIZE * std::fabs(sprite.getScale().y);
-    const float offsetX = (shape.getSize().x - visualWidth) * 0.5f;
-    const float offsetY = shape.getSize().y - visualHeight;
-
-    sprite.setPosition(shape.getPosition().x + offsetX, shape.getPosition().y + offsetY);
-}
-
-void Player::updateTextureRect(int frame)
-{
-    if (!hasSprite)
-        return;
-
-    const int selectedFrame = (frame >= 0) ? frame : Config::SPRITE_ANIMATION_FRAMES[animationIndex];
-    const int frameX = (selectedFrame % 2) * Config::SPRITE_FRAME_SIZE;
-    const int frameY = (selectedFrame / 2) * Config::SPRITE_FRAME_SIZE;
-
-    if (facingRight)
-        sprite.setTextureRect(sf::IntRect(frameX + Config::SPRITE_FRAME_SIZE, frameY, -Config::SPRITE_FRAME_SIZE, Config::SPRITE_FRAME_SIZE));
-    else
-        sprite.setTextureRect(sf::IntRect(frameX, frameY, Config::SPRITE_FRAME_SIZE, Config::SPRITE_FRAME_SIZE));
-}
-
-void Player::createSpriteSheet(const std::string &spriteFile)
-{
-    const std::string spritePath = std::string(GAME_ASSET_DIR) + "/" + spriteFile;
-
-    if (!spriteSheet.loadFromFile(spritePath))
-    {
-        hasSprite = false;
-        return;
-    }
-
-    hasSprite = true;
-    sprite.setTexture(spriteSheet);
-    sprite.setScale(
-        (Config::PLAYER_HITBOX * Config::SPRITE_VISUAL_SCALE) / static_cast<float>(Config::SPRITE_FRAME_SIZE),
-        (Config::PLAYER_HITBOX * Config::SPRITE_VISUAL_SCALE) / static_cast<float>(Config::SPRITE_FRAME_SIZE));
-
-    updateTextureRect(Config::SPRITE_IDLE_FRAME);
-    syncVisualPosition();
+    animator.resetToIdle();
+    animator.syncPosition(shape.getPosition(), shape.getSize());
 }
