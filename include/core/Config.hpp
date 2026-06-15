@@ -35,7 +35,7 @@ namespace Config
     constexpr float TILE_SIZE = 32.f;
 
     // Levels
-    constexpr unsigned LEVEL_COUNT = 3;
+    constexpr unsigned LEVEL_COUNT = 6;
 
     // Delta time
     constexpr float MAX_DT = 0.05f;

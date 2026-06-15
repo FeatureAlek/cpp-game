@@ -14,33 +14,16 @@ void UI::renderMenu(sf::RenderWindow &window, const std::string &title,
     window.draw(overlay);
 
     // title
-    sf::Text titleText;
-    titleText.setFont(font);
-    titleText.setString(title);
-    titleText.setCharacterSize(48);
-    titleText.setFillColor(sf::Color::Yellow);
-    titleText.setPosition(300.f, 100.f);
-    window.draw(titleText);
+    drawText(window, title, 300.f, 100.f, 48, sf::Color::Yellow);
 
     // menu items
     for (std::size_t i = 0; i < items.size(); ++i)
     {
-        sf::Text item;
-        item.setFont(font);
-        item.setString(items[i]);
-        item.setCharacterSize(32);
-        item.setPosition(320.f, 220.f + i * 60.f);
-
-        if (static_cast<int>(i) == selectedIndex)
-        {
-            item.setFillColor(sf::Color::Yellow); // pasirinktas
-            item.setString("> " + items[i]);
-        }
-        else
-        {
-            item.setFillColor(sf::Color::White);
-        }
-        window.draw(item);
+        bool isSelected = (static_cast<int>(i) == selectedIndex);
+        drawText(window,
+                 isSelected ? "> " + items[i] : items[i],
+                 320.f, 220.f + i * 60.f, 32,
+                 isSelected ? sf::Color::Yellow : sf::Color::White);
     }
 }
 
@@ -57,27 +40,18 @@ void UI::renderPauseMenu(sf::RenderWindow &window)
 void UI::renderWinScreen(sf::RenderWindow &window, int p1Gems, int p2Gems)
 {
     renderMenu(window, "You Win!", {"Continue", "Restart", "Exit"});
-
-    sf::Text stats;
-    stats.setFont(font);
-    stats.setString("Player 1 gems: " + std::to_string(p1Gems) + "\n" +
-                    "Player 2 gems: " + std::to_string(p2Gems));
-    stats.setCharacterSize(24);
-    stats.setFillColor(sf::Color::White);
-    stats.setPosition(280.f, 460.f);
-    window.draw(stats);
+    drawText(window,
+             "Player 1 gems: " + std::to_string(p1Gems) + "\n" +
+                 "Player 2 gems: " + std::to_string(p2Gems),
+             280.f, 460.f, 24, sf::Color::White);
 }
 
 void UI::renderGemCounter(sf::RenderWindow &window, int p1Gems, int p2Gems)
 {
-    sf::Text text;
-    text.setFont(font);
-    text.setCharacterSize(20);
-    text.setFillColor(sf::Color::White);
-    text.setString("P1: " + std::to_string(p1Gems) +
-                   "  P2: " + std::to_string(p2Gems));
-    text.setPosition(10.f, 10.f);
-    window.draw(text);
+    drawText(window,
+             "P1: " + std::to_string(p1Gems) +
+                 "  P2: " + std::to_string(p2Gems),
+             10.f, 10.f, 20, sf::Color::White);
 }
 
 void UI::renderLoseScreen(sf::RenderWindow &window)
@@ -87,17 +61,42 @@ void UI::renderLoseScreen(sf::RenderWindow &window)
 
 void UI::renderLevelSelect(sf::RenderWindow &window, int levelCount)
 {
-    std::vector<std::string> items;
-    for (int i = 0; i < levelCount; ++i)
-        items.push_back("Level " + std::to_string(i + 1));
-    items.push_back("Back");
+    // Overlay
+    sf::RectangleShape overlay(sf::Vector2f(768.f, 576.f));
+    overlay.setFillColor(sf::Color(0, 0, 0, 180));
+    window.draw(overlay);
 
-    renderMenu(window, "Select Level", items);
+    // Name
+    drawText(window, "Select Level", 250.f, 60.f, 48, sf::Color::Yellow);
+
+    // Levels
+    const float colX[2] = {180.f, 420.f};
+    const float startY = 160.f, stepY = 70.f;
+    const int rowCount = (levelCount + 1) / 2;
+
+    for (int i = 0; i < levelCount; ++i)
+    {
+        float x = colX[i / rowCount];
+        float y = startY + (i % rowCount) * stepY;
+
+        bool isSelected = (i == selectedIndex);
+        std::string prefix = isSelected ? "> " : "";
+        sf::Color color = isSelected ? sf::Color::Yellow : sf::Color::White;
+
+        drawText(window, prefix + "Level " + std::to_string(i + 1), x, y, 32, color);
+    }
+
+    // Back button
+    bool isBackSelected = (selectedIndex == levelCount);
+    float backY = startY + (levelCount / 2) * stepY + 20.f;
+
+    drawText(window, isBackSelected ? "> Back" : "Back", 300.f, backY, 32,
+             isBackSelected ? sf::Color::Yellow : sf::Color::White);
 }
 
 void UI::renderInstructions(sf::RenderWindow &window)
 {
-    // mini window
+    // Mini window
     sf::RectangleShape panel(sf::Vector2f(500.f, 400.f));
     panel.setFillColor(sf::Color(20, 20, 20, 230));
     panel.setOutlineColor(sf::Color::White);
@@ -105,21 +104,11 @@ void UI::renderInstructions(sf::RenderWindow &window)
     panel.setPosition(134.f, 100.f);
     window.draw(panel);
 
-    // title
-    sf::Text title;
-    title.setFont(font);
-    title.setString("How to Play");
-    title.setCharacterSize(36);
-    title.setFillColor(sf::Color::Yellow);
-    title.setPosition(290.f, 120.f);
-    window.draw(title);
+    // Title
+    drawText(window, "How to Play", 290.f, 120.f, 36, sf::Color::Yellow);
 
-    // Instructions
-    sf::Text text;
-    text.setFont(font);
-    text.setCharacterSize(18);
-    text.setFillColor(sf::Color::White);
-    text.setString(
+    // Instruction text
+    std::string instructions =
         "Player 1 (Red):\n"
         "  - Move: A / D\n"
         "  - Jump: W\n\n"
@@ -129,27 +118,17 @@ void UI::renderInstructions(sf::RenderWindow &window)
         "Collect all gems and reach\n"
         "the door to win!\n\n"
         "Step on buttons to activate\n"
-        "platforms.");
-    text.setPosition(160.f, 180.f);
-    window.draw(text);
+        "platforms.";
 
-    // OK button
-    sf::Text ok;
-    ok.setFont(font);
-    ok.setCharacterSize(24);
-    ok.setPosition(370.f, 450.f);
+    drawText(window, instructions, 160.f, 180.f, 18, sf::Color::White);
 
-    if (selectedIndex == 0)
-    {
-        ok.setFillColor(sf::Color::Yellow);
-        ok.setString("> OK");
-    }
-    else
-    {
-        ok.setFillColor(sf::Color::White);
-        ok.setString("OK");
-    }
-    window.draw(ok);
+    // OK Button
+    bool isOkSelected = (selectedIndex == 0);
+
+    drawText(window,
+             isOkSelected ? "> OK" : "OK",
+             370.f, 450.f, 24,
+             isOkSelected ? sf::Color::Yellow : sf::Color::White);
 }
 
 MenuAction UI::handleInstructions(sf::Keyboard::Key key)
@@ -248,6 +227,17 @@ MenuAction UI::handleLevelSelect(sf::Keyboard::Key key, int levelCount)
         return MenuAction::LevelChosen;
     }
     return MenuAction::None;
+}
+
+void UI::drawText(sf::RenderWindow &window, const std::string &str, float x, float y, unsigned int size, sf::Color color)
+{
+    sf::Text text;
+    text.setFont(font);
+    text.setString(str);
+    text.setCharacterSize(size);
+    text.setFillColor(color);
+    text.setPosition(x, y);
+    window.draw(text);
 }
 
 void UI::resetIndex() { selectedIndex = 0; }

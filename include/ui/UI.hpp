@@ -46,4 +46,7 @@ private:
 
     void renderMenu(sf::RenderWindow &window, const std::string &title,
                     const std::vector<std::string> &items);
+
+    // helper function
+    void drawText(sf::RenderWindow &window, const std::string &str, float x, float y, unsigned int size, sf::Color color);
 };
