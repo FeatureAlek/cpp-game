@@ -76,3 +76,8 @@ bool CollisionManager::checkDoorCollision(Player& player, Door& door){
     
     return player.getBounds().intersects(door.getBounds());
 }
+
+bool CollisionManager::checkButtonCollision(Player& player, Button& button)
+{
+    return player.getBounds().intersects(button.getBounds());
+}

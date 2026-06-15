@@ -1,18 +1,14 @@
 #include "Door.hpp"
-
-namespace
-{
-constexpr float kDoorScale = 2.f;
-}
+#include "Config.hpp"
 
 Door::Door(float x, float y, float width, float height, DoorType type)
 : type(type)
 {
     shape.setSize(sf::Vector2f(width, height));
-    shape.setScale(kDoorScale, kDoorScale);
+    shape.setScale(Config::DOOR_SCALE, Config::DOOR_SCALE);
     shape.setPosition(
-        x - (width * (kDoorScale - 1.f) * 0.5f),
-        y - (height * (kDoorScale - 1.f)));
+        x - (width * (Config::DOOR_SCALE - 1.f) * 0.5f),
+        y - (height * (Config::DOOR_SCALE - 1.f)));
 
 
     if (type == DoorType::playerOneDoor)

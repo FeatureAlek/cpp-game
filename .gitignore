@@ -10,3 +10,6 @@ build/
 *.obj
 
 .vscode/
+
+## only for now
+.md

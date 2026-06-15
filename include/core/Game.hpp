@@ -13,6 +13,7 @@
 #include "SoundManager.hpp"
 #include "BackgroundManager.hpp"
 #include "GameState.hpp"
+#include "Button.hpp"
 
 class Game 
 {
@@ -40,6 +41,7 @@ private:
     void updateGems();
     void updateDoors(float dt);
     void update();
+    void updateButtons();
 
     // other
     void render();
@@ -66,6 +68,7 @@ private:
     std::vector<Hazard> hazards;
     std::vector<Gem> gems;
     std::vector<Door> doors;
+    std::vector<Button> buttons;
 
     // managers
     CollisionManager collision;

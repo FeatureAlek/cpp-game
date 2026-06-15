@@ -43,4 +43,10 @@ namespace Config
     // Time of door opening
     constexpr float DOOR_TIMER = 2.f;
 
+    // Door
+    constexpr float DOOR_SCALE = 2.f;
+
+    // Button
+    constexpr float BUTTON_SCALE = 2.f;
+
 }

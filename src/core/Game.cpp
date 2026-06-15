@@ -199,6 +199,7 @@ void Game::update()
         dt = Config::MAX_DT;
 
     updatePlatforms(dt);
+    updateButtons();
     updatePlayers(dt);
 
     if (updateHazards())
@@ -316,6 +317,26 @@ void Game::updateDoors(float dt)
     }
 }
 
+void Game::updateButtons()
+{
+    for (auto& b : buttons)
+        b.setPressed(false);
+
+    for (auto* p : players)
+        for (auto& b : buttons)
+            if (collision.checkButtonCollision(*p, b))
+                b.setPressed(true);
+
+    bool anyPressed = false;
+    for (auto& b : buttons)
+        if (b.isPressed())
+            anyPressed = true;
+
+    for (auto& p : platforms)
+        if (p.getType() == PlatformType::buttonControlled)
+            p.setActive(anyPressed);
+}
+
 void Game::render()
 {
     window.clear(sf::Color(50, 50, 50));
@@ -333,6 +354,8 @@ void Game::render()
                 g.draw(window);
         for (auto &d : doors)
             d.draw(window);
+        for (auto& b : buttons)
+            b.draw(window);
 
         playerTwo.draw(window);
         playerOne.draw(window);
@@ -378,6 +401,7 @@ void Game::updatePlayer(Player &player, const InputHandler &inputHandler, float 
 void Game::loadLevel(int levelIndex)
 {
     currentLevel = levelIndex;
+    buttons.clear();
     playerOne.resetGemCount();
     playerTwo.resetGemCount();
     doorTimer = 0.f;
@@ -390,6 +414,7 @@ void Game::loadMap(const std::string &name)
     hazards.clear();
     doors.clear();
     gems.clear();
+    buttons.clear();
 
     std::ifstream in(std::string(GAME_ASSET_DIR) + "/" + name);
     if (!in)
@@ -452,6 +477,12 @@ void Game::loadMap(const std::string &name)
                 break;
             case 'd':
                 doors.emplace_back(x, y, tile, tile, DoorType::playerTwoDoor);
+                break;
+            case 'b':
+                buttons.emplace_back(x, y, tile, tile);
+                break;
+            case 'm':
+                platforms.emplace_back(x, y, tile, tile, PlatformType::buttonControlled);
                 break;
 
             case '.':
