@@ -26,6 +26,7 @@ private:
 
     // handlers
     void handleMainMenuInput(sf::Keyboard::Key key);
+    void handleInstructionsInput(sf::Keyboard::Key key);
     void handleLevelSelectInput(sf::Keyboard::Key key);
     void handlePlayingInput(sf::Keyboard::Key key);
     void handlePausedInput(sf::Keyboard::Key key);

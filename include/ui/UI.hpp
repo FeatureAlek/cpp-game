@@ -12,7 +12,8 @@ enum class MenuAction
     LevelChosen,
     BackToLevels,
     Continue,
-    Back
+    Back,
+    Instructions
 };
 
 class UI
@@ -25,12 +26,14 @@ public:
     void renderGemCounter(sf::RenderWindow &window, int p1Gems, int p2Gems);
     void renderLoseScreen(sf::RenderWindow &window);
     void renderLevelSelect(sf::RenderWindow &window, int levelCount);
+    void renderInstructions(sf::RenderWindow& window);
 
     MenuAction handleMainMenu(sf::Keyboard::Key key);
     MenuAction handlePauseMenu(sf::Keyboard::Key key);
     MenuAction handleWinScreen(sf::Keyboard::Key key);
     MenuAction handleLoseScreen(sf::Keyboard::Key key);
     MenuAction handleLevelSelect(sf::Keyboard::Key key, int levelCount);
+    MenuAction handleInstructions(sf::Keyboard::Key key);
 
     void resetIndex();
     int getSelectedLevel() const { return selectedIndex; }

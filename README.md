@@ -43,10 +43,10 @@ make run
 ### TODO
 
 - Level system -> make a hierarchy if level one is not finished levels 1 and 2 ... are not available
-- Create a button which would control the platform
-- Add and AI which would be an enemy (will need to dodge him)
-- In main menu add an instruction tab that would explain how the game works
+- Create a button which would control the platform ✅
+- Add and AI which would be an enemy (will need to dodge him) 
+- In main menu add an instruction tab that would explain how the game works ✅
 - Add door opening door texture (effect)
 - Death effects
-- Change the backgroundla
+- Change the background
 - fix bugs, polish collision system, build game?

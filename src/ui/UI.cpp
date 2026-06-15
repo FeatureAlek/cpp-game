@@ -5,8 +5,8 @@ UI::UI()
     font.loadFromFile(std::string(GAME_ASSET_DIR) + "/DEBUGfont.ttf");
 }
 
-void UI::renderMenu(sf::RenderWindow& window, const std::string& title,
-                    const std::vector<std::string>& items)
+void UI::renderMenu(sf::RenderWindow &window, const std::string &title,
+                    const std::vector<std::string> &items)
 {
     // overlay
     sf::RectangleShape overlay(sf::Vector2f(768.f, 576.f));
@@ -44,17 +44,17 @@ void UI::renderMenu(sf::RenderWindow& window, const std::string& title,
     }
 }
 
-void UI::renderMainMenu(sf::RenderWindow& window)
+void UI::renderMainMenu(sf::RenderWindow &window)
 {
-    renderMenu(window, "2D Game", {"Play", "Exit"});
+    renderMenu(window, "2D Game", {"Play", "Instructions", "Exit"});
 }
 
-void UI::renderPauseMenu(sf::RenderWindow& window)
+void UI::renderPauseMenu(sf::RenderWindow &window)
 {
     renderMenu(window, "Paused", {"Resume", "Restart", "Back to Levels", "Exit Game"});
 }
 
-void UI::renderWinScreen(sf::RenderWindow& window, int p1Gems, int p2Gems)
+void UI::renderWinScreen(sf::RenderWindow &window, int p1Gems, int p2Gems)
 {
     renderMenu(window, "You Win!", {"Continue", "Restart", "Exit"});
 
@@ -68,7 +68,7 @@ void UI::renderWinScreen(sf::RenderWindow& window, int p1Gems, int p2Gems)
     window.draw(stats);
 }
 
-void UI::renderGemCounter(sf::RenderWindow& window, int p1Gems, int p2Gems)
+void UI::renderGemCounter(sf::RenderWindow &window, int p1Gems, int p2Gems)
 {
     sf::Text text;
     text.setFont(font);
@@ -80,12 +80,12 @@ void UI::renderGemCounter(sf::RenderWindow& window, int p1Gems, int p2Gems)
     window.draw(text);
 }
 
-void UI::renderLoseScreen(sf::RenderWindow& window)
+void UI::renderLoseScreen(sf::RenderWindow &window)
 {
     renderMenu(window, "You Lose!", {"Restart", "Back to Levels", "Exit"});
 }
 
-void UI::renderLevelSelect(sf::RenderWindow& window, int levelCount)
+void UI::renderLevelSelect(sf::RenderWindow &window, int levelCount)
 {
     std::vector<std::string> items;
     for (int i = 0; i < levelCount; ++i)
@@ -95,16 +95,84 @@ void UI::renderLevelSelect(sf::RenderWindow& window, int levelCount)
     renderMenu(window, "Select Level", items);
 }
 
+void UI::renderInstructions(sf::RenderWindow &window)
+{
+    // mini window
+    sf::RectangleShape panel(sf::Vector2f(500.f, 400.f));
+    panel.setFillColor(sf::Color(20, 20, 20, 230));
+    panel.setOutlineColor(sf::Color::White);
+    panel.setOutlineThickness(2.f);
+    panel.setPosition(134.f, 100.f);
+    window.draw(panel);
+
+    // title
+    sf::Text title;
+    title.setFont(font);
+    title.setString("How to Play");
+    title.setCharacterSize(36);
+    title.setFillColor(sf::Color::Yellow);
+    title.setPosition(290.f, 120.f);
+    window.draw(title);
+
+    // Instructions
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(18);
+    text.setFillColor(sf::Color::White);
+    text.setString(
+        "Player 1 (Red):\n"
+        "  - Move: A / D\n"
+        "  - Jump: W\n\n"
+        "Player 2 (Blue):\n"
+        "  - Move: Left / Right\n"
+        "  - Jump: Up\n\n"
+        "Collect all gems and reach\n"
+        "the door to win!\n\n"
+        "Step on buttons to activate\n"
+        "platforms.");
+    text.setPosition(160.f, 180.f);
+    window.draw(text);
+
+    // OK button
+    sf::Text ok;
+    ok.setFont(font);
+    ok.setCharacterSize(24);
+    ok.setPosition(370.f, 450.f);
+
+    if (selectedIndex == 0)
+    {
+        ok.setFillColor(sf::Color::Yellow);
+        ok.setString("> OK");
+    }
+    else
+    {
+        ok.setFillColor(sf::Color::White);
+        ok.setString("OK");
+    }
+    window.draw(ok);
+}
+
+MenuAction UI::handleInstructions(sf::Keyboard::Key key)
+{
+    if (key == sf::Keyboard::Return)
+        return MenuAction::Back;
+    return MenuAction::None;
+}
+
 MenuAction UI::handleMainMenu(sf::Keyboard::Key key)
 {
     if (key == sf::Keyboard::Up)
-        selectedIndex = (selectedIndex - 1 + 2) % 2;
+        selectedIndex = (selectedIndex - 1 + 3) % 3;
     if (key == sf::Keyboard::Down)
-        selectedIndex = (selectedIndex + 1) % 2;
+        selectedIndex = (selectedIndex + 1) % 3;
     if (key == sf::Keyboard::Return)
     {
-        if (selectedIndex == 0) return MenuAction::Play;
-        if (selectedIndex == 1) return MenuAction::Exit;
+        if (selectedIndex == 0)
+            return MenuAction::Play;
+        if (selectedIndex == 1)
+            return MenuAction::Instructions;
+        if (selectedIndex == 2)
+            return MenuAction::Exit;
     }
     return MenuAction::None;
 }
@@ -117,10 +185,14 @@ MenuAction UI::handlePauseMenu(sf::Keyboard::Key key)
         selectedIndex = (selectedIndex + 1) % 4;
     if (key == sf::Keyboard::Return)
     {
-        if (selectedIndex == 0) return MenuAction::Resume;
-        if (selectedIndex == 1) return MenuAction::Restart;
-        if (selectedIndex == 2) return MenuAction::BackToLevels;
-        if (selectedIndex == 3) return MenuAction::Exit;
+        if (selectedIndex == 0)
+            return MenuAction::Resume;
+        if (selectedIndex == 1)
+            return MenuAction::Restart;
+        if (selectedIndex == 2)
+            return MenuAction::BackToLevels;
+        if (selectedIndex == 3)
+            return MenuAction::Exit;
     }
     return MenuAction::None;
 }
@@ -133,9 +205,12 @@ MenuAction UI::handleWinScreen(sf::Keyboard::Key key)
         selectedIndex = (selectedIndex + 1) % 3;
     if (key == sf::Keyboard::Return)
     {
-        if (selectedIndex == 0) return MenuAction::Continue;
-        if (selectedIndex == 1) return MenuAction::Restart;
-        if (selectedIndex == 2) return MenuAction::Exit;
+        if (selectedIndex == 0)
+            return MenuAction::Continue;
+        if (selectedIndex == 1)
+            return MenuAction::Restart;
+        if (selectedIndex == 2)
+            return MenuAction::Exit;
     }
     return MenuAction::None;
 }
@@ -148,9 +223,12 @@ MenuAction UI::handleLoseScreen(sf::Keyboard::Key key)
         selectedIndex = (selectedIndex + 1) % 3;
     if (key == sf::Keyboard::Return)
     {
-        if (selectedIndex == 0) return MenuAction::Restart;
-        if (selectedIndex == 1) return MenuAction::BackToLevels;
-        if (selectedIndex == 2) return MenuAction::Exit;
+        if (selectedIndex == 0)
+            return MenuAction::Restart;
+        if (selectedIndex == 1)
+            return MenuAction::BackToLevels;
+        if (selectedIndex == 2)
+            return MenuAction::Exit;
     }
     return MenuAction::None;
 }
@@ -165,8 +243,9 @@ MenuAction UI::handleLevelSelect(sf::Keyboard::Key key, int levelCount)
         selectedIndex = (selectedIndex + 1) % total;
     if (key == sf::Keyboard::Return)
     {
-        if (selectedIndex == levelCount) return MenuAction::Back;
-        return MenuAction::LevelChosen; 
+        if (selectedIndex == levelCount)
+            return MenuAction::Back;
+        return MenuAction::LevelChosen;
     }
     return MenuAction::None;
 }

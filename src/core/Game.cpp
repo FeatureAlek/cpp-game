@@ -56,6 +56,9 @@ void Game::processEvents()
             case GameState::MainMenu:
                 handleMainMenuInput(event.key.code);
                 break;
+            case GameState::Instructions:
+                handleInstructionsInput(event.key.code);
+                break;
             case GameState::LevelSelect:
                 handleLevelSelectInput(event.key.code);
                 break;
@@ -84,8 +87,23 @@ void Game::handleMainMenuInput(sf::Keyboard::Key key)
         gameState = GameState::LevelSelect;
         ui.resetIndex();
     }
+    if (action == MenuAction::Instructions)
+    {
+        gameState = GameState::Instructions;
+        ui.resetIndex();
+    }
     if (action == MenuAction::Exit)
         window.close();
+}
+
+void Game::handleInstructionsInput(sf::Keyboard::Key key)
+{
+    MenuAction action = ui.handleInstructions(key);
+    if (action == MenuAction::Back)
+    {
+        gameState = GameState::MainMenu;
+        ui.resetIndex();
+    }
 }
 
 void Game::handleLevelSelectInput(sf::Keyboard::Key key)
@@ -319,20 +337,20 @@ void Game::updateDoors(float dt)
 
 void Game::updateButtons()
 {
-    for (auto& b : buttons)
+    for (auto &b : buttons)
         b.setPressed(false);
 
-    for (auto* p : players)
-        for (auto& b : buttons)
+    for (auto *p : players)
+        for (auto &b : buttons)
             if (collision.checkButtonCollision(*p, b))
                 b.setPressed(true);
 
     bool anyPressed = false;
-    for (auto& b : buttons)
+    for (auto &b : buttons)
         if (b.isPressed())
             anyPressed = true;
 
-    for (auto& p : platforms)
+    for (auto &p : platforms)
         if (p.getType() == PlatformType::buttonControlled)
             p.setActive(anyPressed);
 }
@@ -343,7 +361,7 @@ void Game::render()
 
     bgManager.draw(window, gameState);
 
-    if (gameState != GameState::MainMenu && gameState != GameState::LevelSelect)
+    if (gameState != GameState::MainMenu && gameState != GameState::LevelSelect && gameState != GameState::Instructions)
     {
         for (auto &platform : platforms)
             platform.draw(window);
@@ -354,7 +372,7 @@ void Game::render()
                 g.draw(window);
         for (auto &d : doors)
             d.draw(window);
-        for (auto& b : buttons)
+        for (auto &b : buttons)
             b.draw(window);
 
         playerTwo.draw(window);
@@ -373,6 +391,8 @@ void Game::render()
     {
         if (gameState == GameState::MainMenu)
             ui.renderMainMenu(window);
+        else if (gameState == GameState::Instructions)
+            ui.renderInstructions(window);
         else if (gameState == GameState::LevelSelect)
             ui.renderLevelSelect(window, Config::LEVEL_COUNT);
     }
