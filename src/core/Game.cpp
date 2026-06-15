@@ -11,6 +11,8 @@ Game::Game()
 {
     window.setFramerateLimit(Config::FPS_LIMIT); // 60 FPS
 
+    unlockedLevels = SaveManager::load();
+
     // Player1 Player2 added into vector
     players.push_back(&playerOne);
     players.push_back(&playerTwo);
@@ -108,7 +110,7 @@ void Game::handleInstructionsInput(sf::Keyboard::Key key)
 
 void Game::handleLevelSelectInput(sf::Keyboard::Key key)
 {
-    MenuAction action = ui.handleLevelSelect(key, Config::LEVEL_COUNT);
+    MenuAction action = ui.handleLevelSelect(key, Config::LEVEL_COUNT, unlockedLevels);
     if (action == MenuAction::LevelChosen)
     {
         loadLevel(ui.getSelectedLevel());
@@ -160,8 +162,16 @@ void Game::handlePausedInput(sf::Keyboard::Key key)
 }
 
 void Game::handleWinInput(sf::Keyboard::Key key)
-{
+{   
+
+    if (currentLevel + 1 >= unlockedLevels && unlockedLevels < Config::LEVEL_COUNT)
+    {
+        unlockedLevels = currentLevel + 2; // +2 cause currentLevel 0-based
+        SaveManager::save(unlockedLevels);
+    }
+
     MenuAction action = ui.handleWinScreen(key);
+
     if (action == MenuAction::Continue)
     {
         sounds.stopAllSounds();
@@ -394,7 +404,7 @@ void Game::render()
         else if (gameState == GameState::Instructions)
             ui.renderInstructions(window);
         else if (gameState == GameState::LevelSelect)
-            ui.renderLevelSelect(window, Config::LEVEL_COUNT);
+            ui.renderLevelSelect(window, Config::LEVEL_COUNT, unlockedLevels);
     }
 
     window.display();

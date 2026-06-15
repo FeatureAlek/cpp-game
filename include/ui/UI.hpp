@@ -25,14 +25,14 @@ public:
     void renderWinScreen(sf::RenderWindow &window, int p1Gems, int p2Gems);
     void renderGemCounter(sf::RenderWindow &window, int p1Gems, int p2Gems);
     void renderLoseScreen(sf::RenderWindow &window);
-    void renderLevelSelect(sf::RenderWindow &window, int levelCount);
     void renderInstructions(sf::RenderWindow& window);
+    void renderLevelSelect(sf::RenderWindow& window, int levelCount, int unlockedLevels);
 
     MenuAction handleMainMenu(sf::Keyboard::Key key);
     MenuAction handlePauseMenu(sf::Keyboard::Key key);
     MenuAction handleWinScreen(sf::Keyboard::Key key);
     MenuAction handleLoseScreen(sf::Keyboard::Key key);
-    MenuAction handleLevelSelect(sf::Keyboard::Key key, int levelCount);
+    MenuAction handleLevelSelect(sf::Keyboard::Key key, int levelCount, int unlockedLevels);
     MenuAction handleInstructions(sf::Keyboard::Key key);
 
     void resetIndex();

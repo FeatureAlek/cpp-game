@@ -14,6 +14,7 @@
 #include "BackgroundManager.hpp"
 #include "GameState.hpp"
 #include "Button.hpp"
+#include "SaveManager.hpp"
 
 class Game 
 {
@@ -23,6 +24,9 @@ public:
     void loadLevel(int levelIndex);
 
 private:
+
+    // unlocked levels by default 
+    int unlockedLevels = 1;
 
     // handlers
     void handleMainMenuInput(sf::Keyboard::Key key);

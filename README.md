@@ -50,3 +50,4 @@ make run
 - Death effects
 - Change the background
 - fix bugs, polish collision system, build game?
+- Add best time, gems collected (save to file)

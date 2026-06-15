@@ -1,4 +1,5 @@
 #include "UI.hpp"
+#include "SaveManager.hpp"
 
 UI::UI()
 {
@@ -59,14 +60,14 @@ void UI::renderLoseScreen(sf::RenderWindow &window)
     renderMenu(window, "You Lose!", {"Restart", "Back to Levels", "Exit"});
 }
 
-void UI::renderLevelSelect(sf::RenderWindow &window, int levelCount)
+void UI::renderLevelSelect(sf::RenderWindow& window, int levelCount, int unlockedLevels)
 {
     // Overlay
     sf::RectangleShape overlay(sf::Vector2f(768.f, 576.f));
     overlay.setFillColor(sf::Color(0, 0, 0, 180));
     window.draw(overlay);
 
-    // Name
+    // Title
     drawText(window, "Select Level", 250.f, 60.f, 48, sf::Color::Yellow);
 
     // Levels
@@ -79,17 +80,34 @@ void UI::renderLevelSelect(sf::RenderWindow &window, int levelCount)
         float x = colX[i / rowCount];
         float y = startY + (i % rowCount) * stepY;
 
-        bool isSelected = (i == selectedIndex);
-        std::string prefix = isSelected ? "> " : "";
-        sf::Color color = isSelected ? sf::Color::Yellow : sf::Color::White;
+        bool locked = (i + 1) > unlockedLevels;
+        bool isSelected = (i == selectedIndex) && !locked;
 
-        drawText(window, prefix + "Level " + std::to_string(i + 1), x, y, 32, color);
+        std::string label;
+        sf::Color color;
+
+        if (isSelected)
+        {
+            label = "> Level " + std::to_string(i + 1);
+            color = sf::Color::Yellow;
+        }
+        else if (locked)
+        {
+            label = "Level " + std::to_string(i + 1) + " [locked]";
+            color = sf::Color(100, 100, 100);
+        }
+        else
+        {
+            label = "Level " + std::to_string(i + 1);
+            color = sf::Color::White;
+        }
+
+        drawText(window, label, x, y, 32, color);
     }
 
     // Back button
     bool isBackSelected = (selectedIndex == levelCount);
-    float backY = startY + (levelCount / 2) * stepY + 20.f;
-
+    float backY = startY + rowCount * stepY + 20.f;
     drawText(window, isBackSelected ? "> Back" : "Back", 300.f, backY, 32,
              isBackSelected ? sf::Color::Yellow : sf::Color::White);
 }
@@ -212,19 +230,30 @@ MenuAction UI::handleLoseScreen(sf::Keyboard::Key key)
     return MenuAction::None;
 }
 
-MenuAction UI::handleLevelSelect(sf::Keyboard::Key key, int levelCount)
+MenuAction UI::handleLevelSelect(sf::Keyboard::Key key, int levelCount, int unlockedLevels)
 {
     int total = levelCount + 1;
 
     if (key == sf::Keyboard::Up)
-        selectedIndex = (selectedIndex - 1 + total) % total;
+    {
+        int next = (selectedIndex - 1 + total) % total;
+        while (next < levelCount && (next + 1) > unlockedLevels)
+            next = (next - 1 + total) % total;
+        selectedIndex = next;
+    }
     if (key == sf::Keyboard::Down)
-        selectedIndex = (selectedIndex + 1) % total;
+    {
+        int next = (selectedIndex + 1) % total;
+        while (next < levelCount && (next + 1) > unlockedLevels)
+            next = (next + 1) % total;
+        selectedIndex = next;
+    }
     if (key == sf::Keyboard::Return)
     {
         if (selectedIndex == levelCount)
             return MenuAction::Back;
-        return MenuAction::LevelChosen;
+        if (selectedIndex + 1 <= unlockedLevels)
+            return MenuAction::LevelChosen;
     }
     return MenuAction::None;
 }
